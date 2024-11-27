@@ -1,0 +1,85 @@
+body{
+    width: 100vw;
+    height: 80vh;
+    overflow: auto;
+}
+.cuerpo{
+    width: 80vw;
+    height: 80vh;
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+    margin-left: 10% ;
+    margin-right:10% ;
+    background: white;
+    border-top: solid 40px #e0e6f0;
+    padding: 10px;
+    
+
+}
+.izquierda{
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.derecha{
+    padding-left: 25px;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    border-left: solid 3px black;
+    gap: 10px;
+}
+#documentos{
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
+}
+.exterior{
+    background: #e0e6f0;
+    height: 88vh;
+}
+#cartas{
+    background: #8acf32;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 40px;
+}
+#evaluacion03{
+    background: #098440;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 40px;
+
+}
+#proyecto{
+    background: #00bf63;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 40px;
+}
+#subir{
+    background: #fd5d0e;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 40px;
+}
+#evaluar{
+    background: #004aad;
+        border: none;
+    border-radius: 10px;
+    color: white;
+    width: 150px;
+    height: 40px;
+}
+
+

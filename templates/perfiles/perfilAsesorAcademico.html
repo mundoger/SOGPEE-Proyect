@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluacion al estudiante</title>
+    <link rel="stylesheet" href="css/AsesorAcademico.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .exterior {
+            background-color: white;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cuerpo {
+            display: flex;
+            gap: 40px;
+            justify-content: space-between;
+        }
+
+        .izquierda {
+            width: 30%;
+            padding: 20px;
+            border-right: 2px solid #dee2e6;
+        }
+
+        .derecha {
+            width: 65%;
+            padding: 20px;
+        }
+
+        .izquierda span {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .derecha h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            width: 20%; /* Asegura que los botones se ajusten al 100% */
+            display: block;
+        }
+
+        #cartas {
+            background-color: #7bbf46; /* Revisar */
+        }
+
+        #evaluacion03 {
+            background-color: #fa5604; /* Evaluar */
+        }
+
+        #evaluar {
+            background-color: #5271ff; /* Adjuntar */
+        }
+
+        #proyecto {
+            background-color: #0cc0df; /* Subir */
+        }
+
+        hr {
+            margin: 10px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        /* Estilo para que los botones Adjuntar y Subir estén al lado */
+        #documentos {
+            display: flex;
+            gap: 10px;
+        }
+
+        #documentos button {
+            width: 20%; /* Ajusta el tamaño de los botones a casi la mitad */
+        }
+        header {
+            background-color: white;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<header class="container-fluid d-flex justify-content-center p-2">
+    <div class="logoUPT">
+        <img src="../img/logo upt.png" alt="logo UPT" height="80">
+    </div>
+</header><br>
+
+<div class="exterior">
+    <div class="cuerpo">
+        <div class="izquierda">
+            <p><strong>Nombre:</strong><span></span></p>
+            <hr>
+            <p><strong>Teléfono:</strong><span></span></p>
+            <hr>
+            <p><strong>Correo:</strong><span></span></p>
+            <hr>
+        </div>
+
+        <div class="derecha">
+            <h3>Revisar expediente de estudiante</h3>
+            <button type="button" id="cartas">Revisar</button>
+
+            <h3>Evaluar expediente</h3>
+            <button type="button" id="evaluacion03">Evaluar</button>
+
+            <h3>Subir acta de calificaciones</h3>
+            <section id="documentos">
+                <button type="button" id="evaluar">Adjuntar</button>
+                <button type="button" id="proyecto">Subir</button>
+            </section>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

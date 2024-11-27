@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>SOGPEE</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+         <!-- Bootstrap CSS -->
+         <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link rel="stylesheet" href="{{
+            url_for('static',
+            filename='css/main.css')
+         }}">
+         <!-- Style CSS -->
+         <link rel="stylesheet" href="{{
+            url_for('static',
+            filename='css/style.css')
+         }}">
+    </head>
+
+    <body>
+        <!--Encabezado-->
+        <header class="container-fluid d-flex justify-content-center p-2">
+            <div class="logoUPT" >
+                <img src="../static/img/logo_upt.png" alt="logo UPT" height="80">
+            </div>
+            
+        </header>
+        <!--Contenido-->
+        <main>
+            <!--Carrusel-->
+            <div id="carouselExample" class="carousel slide">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" data-bs-interval="3000">
+                    <img src="../static/img/banner1.png" class="d-block w-100" alt="slide1">
+                  </div>
+                  <div class="carousel-item" data-bs-interval="2000">
+                    <img src="../static/img/banner2.png" class="d-block w-100" alt="slide2">
+                  </div>
+                  <div class="carousel-item"data-bs-interval="2000">
+                    <img src="../static/img/banner3.png" class="d-block w-100" alt="slide3">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            
+            <!--Selección de perfil-->
+            <section class="section-padding m-5">
+
+                <div class="container">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-12 mb-5">
+                            <h1>SELECCIONA UN PERFIL</h1>
+                        </div>
+                    </div>
+            
+                    <div class="row justify-content-center">
+                        <div class="col-lg-3 col-md-6 col-12 mb-4">
+                            <div class="featured-block d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                                <a href="/loginEstudiante2" class="d-block">
+                                    <img src="../static/img/graduado(1).png" class="featured-block-image img-fluid mb-3" alt="ESTUDIANTE">
+                                    <p class="featured-block-text">ESTUDIANTE</p>
+                                </a>
+                            </div>
+                        </div>
+            
+                        <div class="col-lg-3 col-md-6 col-12 mb-4">
+                            <div class="featured-block d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                                <a href="/loginAsesorAcademico2" class="d-block">
+                                    <img src="../static/img/teach_4696866.png" class="featured-block-image img-fluid mb-3" alt="ASESOR ACADÉMICO">
+                                    <p class="featured-block-text">ASESOR ACADÉMICO</p>
+                                </a>
+                            </div>
+                        </div>
+            
+                        <div class="col-lg-3 col-md-6 col-12 mb-4">
+                            <div class="featured-block d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                                <a href="/loginCoordinacion2" class="d-block">
+                                    <img src="../static/img/empleado.png" class="featured-block-image img-fluid mb-3" alt="COORDINACIÓN">
+                                    <p class="featured-block-text">COORDINACIÓN</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </section>
+            
+            <!--Barra de acciones-->
+            <div class="bg-dark p-5">
+                <div class="container">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-md-3 mb-3">
+                            <div class="bg-primary p-4 d-flex justify-content-center align-items-center h-100">
+                                <a href="Agregar.html" class="text-white text-center">AGREGAR PROYECTO DE ESTANCIA</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="bg-success p-4 d-flex justify-content-center align-items-center h-100">
+                                <a href="#" class="text-white text-center">CONSULTAR MANUAL DE PROCEDIMIENTOS ISO-9001 2015</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div id="enlace_paginaUPT" class="p-4 d-flex justify-content-center align-items-center h-100" >
+                                <a href="https://uptecamac.edomex.gob.mx/" class="text-white text-center">PÁGINA OFICIAL UPT</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="bg-danger p-4 d-flex justify-content-center align-items-center h-100">
+                                <a href="http://189.254.6.234/suieupt/login" class="text-white text-center">SUIE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+        </main>
+
+        <!--Pié de página-->
+        <footer class="footer mt-auto py-5 bg-white border ">
+            <div class="site-section">
+                <div class="container">
+        
+                  <div class="row">
+                    <div class="col-sm">
+                      <h3>Acerca del Sitio</h3>
+                      <ul class="list-unstyled links mt-2">
+                        <li><a href="#">Enlace a la Página de la UPT</a></li>
+                        <li><a href="#">Contáctanos</a></li>
+                        <li><a href="#">Mapa del sitio</a></li>
+                        <li><a href="#">Aviso de Privacidad</a></li>
+                        <li><a href="#">Acerca del sitio</a></li>
+                      </ul>
+                    </div>
+                    <div class="col-sm">
+                      <h3>Contacto</h3>
+                      <ul class="list-unstyled links">
+                        <li>Secretaría de Educación</li>
+                        <li>Prolongación 5 de Mayo #10, Colonia Felipe Villanueva, Centro Tecámac, CP 55740, Estado de México</li>
+                        <li><a href="5559388670">5559388670</a></li>
+                        <li><a href="control_escolar@uptecamac.edu.mx">control_escolar@uptecamac.edu.mx</a></li>
+                      </ul>
+                    </div>
+
+                    <div class="col-sm">
+                        <h3>Enlaces de Interés</h3>
+                        <ul class="list-unstyled links mt-2">
+                         <li><a href="#">IPOMEX</a></li>
+                         <li><a href="#">IPOMEX 4.0</a></li>
+                         <li><a href="#">SIPOT</a></li>
+                         <li><a href="#">SAIMEX</a></li>
+                         <li><a href="#">Estadísticas</a></li>
+                         <li><a href="#">Datos abiertos en México</a></li>
+                         <li><a href="#">Fundación de Datos Abiertos</a></li>
+                         <li><a href="#">Edictos</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-sm">
+                        <img src="../static/img//logo Gobierno de México.png" alt="logo">
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="container-fluid text-center p-3">
+                    <p class="copyright">Algunos derechos reservados 2024. Universidad Politécnica de Tecámac.</p>
+                    <div class="logo mt-2">
+                        <img src="../static/img//logo_upt.png" alt="logo UPT" height="80">
+                    </div>
+                </div>
+
+        </footer>
+        <!-- Bootstrap JavaScript Libraries -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
