@@ -105,7 +105,7 @@
 <body>
 <header class="container-fluid d-flex justify-content-center p-2">
             <div class="logoUPT" >
-                <img src="../img/logo upt.png" alt="logo UPT" height="80">
+                <img src="../static/img/logo_upt.png" alt="logo UPT" height="80">
             </div>
 </header><br>
     <div class="container">
@@ -114,19 +114,19 @@
             <div class="left-column">
                 <div class="form-group">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre">
+                    <input type="text" id="nombre" name="nombre" value="{{Nombre1}} {{Nombre2}}" disabled>
                 </div>
                 <div class="form-group">
                     <label for="matricula">Matrícula:</label>
-                    <input type="text" id="matricula" name="matricula">
+                    <input type="text" id="matricula" name="matricula" value="{{Matricula}}" disabled>
                 </div>
                 <div class="form-group">
                     <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono">
+                    <input type="tel" id="telefono" name="telefono" value="{{Telefono}}" disabled>
                 </div>
                 <div class="form-group">
                     <label for="correo">Correo:</label>
-                    <input type="email" id="correo" name="correo">
+                    <input type="email" id="correo" name="correo" value="{{Correo}}" disabled>
                 </div>
             </div>
 
@@ -139,6 +139,10 @@
                     <label for="parcial">Selecciona parcial</label>
                     <select id="parcial" name="parcial">
                         <option value="">...Seleccionar...</option>
+                        <option value="">Parcial 1</option>
+                        <option value="">Parcial 2</option>
+                        <option value="">Parcial 3</option>
+
                     </select>
                 </div>
                 <div class="form-group">

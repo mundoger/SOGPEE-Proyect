@@ -4,7 +4,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
 from conexion import engine
 from datetime import datetime
-import hashlib,os
 import re
 
 app = Flask(__name__)
@@ -20,3 +19,39 @@ def loginAsesorAcademico2():
 @app.route('/loginCoordinacion2')
 def loginCoordinacion2():
     return render_template('login/loginCoordinacion2.html')
+@app.route('/iniciarSesionEstudiante',methods=['POST'])
+def loginEstudiante():
+    matricula= request.form['matricula']
+    correo= request.form['correo']
+    resultado = inicioSesionEstudiante(matricula,correo)
+    return resultado
+
+
+
+
+
+
+
+
+
+
+
+def inicioSesionEstudiante(matricula,correo):
+    try:
+        query = text("SELECT Matricula,Nombre1,Nombre2,ApellidoP,ApellidoM,Telefono,Correo FROM estudiante WHERE matricula = :matricula AND correo =:correo")
+        with engine.connect() as conn:
+            ok= conn.execute(query, {'matricula': matricula,'correo':correo}).fetchone()
+            Matricula = ok[0]
+            Nombre1 = ok[1]
+            Nombre2 = ok[2]
+            ApellidoP = ok[3]
+            ApellidoM = ok[4]
+            Telefono = ok[5]
+            Correo = ok[6]
+
+            if ok:
+                return render_template('/perfiles/evaluacionEstudiante.html',Matricula=Matricula,Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo)
+            else:
+                return 'no encontado'
+    except Exception as e:
+            return f'error {e}'
