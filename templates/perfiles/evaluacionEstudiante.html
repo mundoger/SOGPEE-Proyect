@@ -13,8 +13,15 @@
 <body>
 <header class="container-fluid d-flex justify-content-center p-2">
             <div class="logoUPT" >
-                <img src="../static/img/logo_upt.png" alt="logo UPT" height="80">
+                <a href="/" class="logo-upt">
+                    <img src="../static/img/logo_upt.png" alt="Logo UPT" height="80">
+                </a>
             </div>
+
+
+            
+
+            
 </header><br>
     <div class="container">
         <div class="form-container">
@@ -42,7 +49,8 @@
             <div class="divider"></div>
 <form action="/enviarDocumentos" method="post" enctype="multipart/form-data">
     <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
-
+    <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}" >
+    <input type="hidden" id="correo" name="correo" value="{{Correo}}" >
     <div class="right-column">
         <div class="form-group">
             <label for="parcial">Selecciona parcial</label>
@@ -71,15 +79,15 @@
         <div class="buttons-container">
 
         <label for="file-cartas" class="btn btn-cartas">Cartas</label>
-<input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf, .doc, .docx">
+<input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf" required>
 
 <!-- Botón "Evaluación 03" -->
 <label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
-<input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf, .doc, .docx">
+<input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf" required>
 
 <!-- Botón "Proyecto" -->
 <label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
-<input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf, .doc, .docx">
+<input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf" required>
 
             <br>
             <button class="btn btn-documentos" name="accion" value="enviar">Subir documentos</button>

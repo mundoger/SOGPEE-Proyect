@@ -43,11 +43,15 @@ def enviarDocumentos():
     nombre = request.form['nombre']
     accion = request.form.get('accion')
     cartas = request.files.get('cartas')
+    proyecto = request.files.get('proyecto')
+    matricula = request.form['matricula']
+    correo = request.form['correo']
     if accion == 'evaluar':
         return 'evaluaciom'
     elif accion == 'enviar':
-        resultado = guardarCartas(cartas,parcial,nombre)
-        return resultado
+        guardarCartas(cartas,parcial,nombre)
+        guardarProyectos(proyecto,parcial,nombre)
+        return render_template('carga.html', matricula=matricula,correo=correo)
     else:
         return 'accion desconocida'
 
@@ -112,8 +116,17 @@ def guardarCartas(archivo,parcial,nombre):
         return 'debe ser un archivo pdf'
     ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
     archivo.save(ruta_guardado)
-    return f'guardado en {ruta_guardado}'
 
+def guardarProyectos(archivo,parcial,nombre):
+    UPLOAD_FOLDER = 'static/proyectos'
+    nuevo_nombre = f'proyeto{nombre}{parcial}.pdf'
+    if archivo.filename == '':
+        return 'No se selecciono ningun archivo'
+    if not archivo.filename.endswith('.pdf'):
+        return 'debe ser un archivo pdf'
+    ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
+    archivo.save(ruta_guardado)
+    
 
 
 

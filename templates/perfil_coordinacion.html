@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario UPT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr 1px 1fr;
+            gap: 40px;
+        }
+
+        .divider {
+            background-color: #dee2e6;
+            height: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-registrar{
+            background-color: #7bbf46;
+        }
+
+        .btn-modificar {
+            background-color: #fa5604;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo">
+                </div>
+            </div>
+
+            <!-- Divisor vertical -->
+            <div class="divider"></div>
+
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <div class="form-group">
+                    <label for="parcial">Alta de academico:</label>
+                     <button class="btn btn-registrar">Registrar</button>
+
+                </div>
+                <div class="form-group">
+                    <label for="titulo">Modificar periodo</label>
+                    <button class="btn btn-modificar">Modificar</button>
+                </div>
+        </div>
+    </div>
+</body>
+</html>

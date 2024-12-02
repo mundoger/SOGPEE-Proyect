@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificar Ser</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/calificar_ser.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="matricula">Matrícula:</label>
+                    <input type="text" id="matricula" name="matricula">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo">
+                </div>
+            </div>
+
+            <!-- Divisor vertical -->
+            <div class="divider"></div>
+
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <div class="form-group">
+                    <h1>Calificar Ser</h1>
+                    <label for="parcial">Parcial</label>
+                    <select id="parcial" name="parcial">
+                        <option value="">Seleccionar Parcial</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+
+                    <label for="estudiante">Nombre del estudiante:</label>
+                    <select id="estudiante" name="estudiante">
+                        <option value="">...Seleccionar...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de evaluación única para todos los parciales -->
+        <div id="evaluation-container" class="evaluation-container">
+            <table class="evaluation-table">
+                <thead>
+                    <tr>
+                        <th>Criterio de Evaluación</th>
+                        <th>Calificación (5-10)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Puntualidad y asistencia</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Responsabilidad en la veracidad y confiabilidad de la información</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Atención y congruencia en las instrucciones del asesor académico</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ética en la confidencialidad y Objetividad en el desarrollo de la información empresarial</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Capacidad, innovación e iniciativa para resolver problemas</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Evidencia liderazgo y analiza sus áreas de oportunidad</td>
+                        <td>
+                            <select>
+                                <option value="">Seleccionar</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br><br>
+             <button class="btn btn-calificar">Calificar</button>
+        </div>
+
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const parcialSelect = document.getElementById('parcial');
+            const estudianteSelect = document.getElementById('estudiante');
+            const evaluationContainer = document.getElementById('evaluation-container');
+
+            // Simulated list of students (you would typically populate this from a backend)
+            const students = [
+                'Juan Pérez',
+                'María González',
+                'Carlos Rodríguez',
+                'Ana Martínez'
+            ];
+
+            // Populate students dropdown
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student;
+                option.textContent = student;
+                estudianteSelect.appendChild(option);
+            });
+
+            // Show/hide evaluation table based on partial selection
+            parcialSelect.addEventListener('change', function() {
+                if (this.value) {
+                    evaluationContainer.style.display = 'block';
+                } else {
+                    evaluationContainer.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
