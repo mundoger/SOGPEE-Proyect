@@ -4,7 +4,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
 from conexion import engine
 from datetime import datetime
-import re
+import re,os
 
 app = Flask(__name__)
 @app.route('/')
@@ -25,11 +25,33 @@ def loginEstudiante():
     correo= request.form['correo']
     resultado = inicioSesionEstudiante(matricula,correo)
     return resultado
+@app.route('/logincoordinacion',methods=['POST'])
+def logincoordinacion():
+    correo = request.form['correo']
+    password = request.form['password']
+    resultado = inicioSesionCoordinacion(correo,password)
+    return resultado
+@app.route('/guardartodo',methods=['POST'])
+def guardartodo():
+    titulo = request.form['titulocuestionario']
+    funcion = request.form['FuncionProyecto']
+    resultado = agregarproyectos(titulo,funcion)
+    return resultado
+@app.route('/enviarDocumentos', methods=['POST'])
+def enviarDocumentos():
+    parcial = request.form['parcial']
+    nombre = request.form['nombre']
+    accion = request.form.get('accion')
+    cartas = request.files.get('cartas')
+    if accion == 'evaluar':
+        return 'evaluaciom'
+    elif accion == 'enviar':
+        resultado = guardarCartas(cartas,parcial,nombre)
+        return resultado
+    else:
+        return 'accion desconocida'
 
 
-
-
-#hola daniel
 
 
 
@@ -55,3 +77,61 @@ def inicioSesionEstudiante(matricula,correo):
                 return 'no encontado'
     except Exception as e:
             return f'error {e}'
+    
+def inicioSesionCoordinacion(correo,password):
+    try:
+        query = text("SELECT Correo,password FROM coordinacion WHERE correo = :correo AND password =:password")
+        with engine.connect() as conn:
+            ok= conn.execute(query, {'correo': correo,'password':password}).fetchone()
+            if ok:
+                return render_template('/Agregar.html')
+            else:
+                return 'no encontado'
+    except Exception as e:
+            return f'{e}'
+
+def agregarproyectos(titulo,funcion):
+    try:
+        query = text("INSERT INTO proyecto (Nombre,Funcion) VALUES (:Nombre,:Funcion)")
+        with engine.connect() as conn:
+            ok = conn.execute(query,{'Nombre' :titulo,'Funcion':funcion})
+            if ok:
+                return 'ok'
+            else:
+                return "oknt"
+
+    except Exception as e:
+        return e
+
+def guardarCartas(archivo,parcial,nombre):
+    UPLOAD_FOLDER = 'static/cartas'
+    nuevo_nombre = f'cartas{nombre}{parcial}.pdf'
+    if archivo.filename == '':
+        return 'No se selecciono ningun archivo'
+    if not archivo.filename.endswith('.pdf'):
+        return 'debe ser un archivo pdf'
+    ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
+    archivo.save(ruta_guardado)
+    return f'guardado en {ruta_guardado}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

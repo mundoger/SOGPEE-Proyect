@@ -4,103 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario UPT</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e9ecef;
-            margin: 0;
-            padding: 20px;
-        }
+    <link rel="stylesheet" href="{{
+        url_for('static',
+        filename='css/evaluacionEstudiante.css')
+    }}">
 
-        .container {
-            background-color: white;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .form-container {
-            display: grid;
-            grid-template-columns: 0.3fr 1px 1fr;
-            gap: 40px;
-        }
-
-        .divider {
-            background-color: #dee2e6;
-            height: 100%;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            margin-bottom: 16px;
-        }
-
-        .buttons-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .btn-cartas {
-            background-color: #8bc34a;
-        }
-
-        .btn-evaluacion {
-            background-color: #00964d;
-        }
-
-        .btn-proyecto {
-            background-color: #00c853;
-        }
-
-        .btn-documentos {
-            background-color: #ff5722;
-        }
-
-        .btn-evaluar {
-            background-color: #0052cc;
-        }
-
-        .section-title {
-            margin: 24px 0 16px 0;
-            color: #2c3e50;
-        }
-        header {
-            background-color: white;
-
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .file-input {
-            display: none; /* Oculta el input de archivo */
-        }
-    </style>
 </head>
 <body>
 <header class="container-fluid d-flex justify-content-center p-2">
@@ -132,55 +40,58 @@
 
             <!-- Divisor vertical -->
             <div class="divider"></div>
+<form action="/enviarDocumentos" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
 
-            <!-- Columna derecha -->
-            <div class="right-column">
-                <div class="form-group">
-                    <label for="parcial">Selecciona parcial</label>
-                    <select id="parcial" name="parcial">
-                        <option value="">...Seleccionar...</option>
-                        <option value="">Parcial 1</option>
-                        <option value="">Parcial 2</option>
-                        <option value="">Parcial 3</option>
+    <div class="right-column">
+        <div class="form-group">
+            <label for="parcial">Selecciona parcial</label>
+            <select id="parcial" name="parcial" required>
+                <option value="">...Seleccionar...</option>
+                <option value="Parcial1">Parcial 1</option>
+                <option value="Parcial2">Parcial 2</option>
+                <option value="Parcia3">Parcial 3</option>
 
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="titulo">Título del proyecto</label>
-                    <select id="titulo" name="titulo">
-                        <option value="">...Seleccionar...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="asesor">Asesor empresarial</label>
-                    <select id="asesor" name="asesor">
-                        <option value="">...Seleccionar...</option>
-                    </select>
-                </div>
-
-                <h3 class="section-title">Adjuntar expediente</h3>
-                <div class="buttons-container">
-
-                <label for="file-cartas" class="btn btn-cartas">Cartas</label>
-        <input type="file" id="file-cartas" class="file-input" accept=".pdf, .doc, .docx">
-
-        <!-- Botón "Evaluación 03" -->
-        <label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
-        <input type="file" id="file-evaluacion" class="file-input" accept=".pdf, .doc, .docx">
-
-        <!-- Botón "Proyecto" -->
-        <label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
-        <input type="file" id="file-proyecto" class="file-input" accept=".pdf, .doc, .docx">
-
-                    <br>
-                    <button class="btn btn-documentos">Subir documentos</button>
-                </div>
-
-                <h3 class="section-title">Encuesta de satisfacción</h3>
-                <button class="btn btn-evaluar">Evaluar</button>
-            </div>
+            </select>
         </div>
+        <div class="form-group">
+            <label for="titulo">Título del proyecto</label>
+            <select id="titulo" name="titulo">
+                <option value="">...Seleccionar...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="asesor">Asesor empresarial</label>
+            <select id="asesor" name="asesor">
+                <option value="">...Seleccionar...</option>
+            </select>
+        </div>
+
+        <h3 class="section-title">Adjuntar expediente</h3>
+        <div class="buttons-container">
+
+        <label for="file-cartas" class="btn btn-cartas">Cartas</label>
+<input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf, .doc, .docx">
+
+<!-- Botón "Evaluación 03" -->
+<label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
+<input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf, .doc, .docx">
+
+<!-- Botón "Proyecto" -->
+<label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
+<input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf, .doc, .docx">
+
+            <br>
+            <button class="btn btn-documentos" name="accion" value="enviar">Subir documentos</button>
+        </div>
+
+        <h3 class="section-title">Encuesta de satisfacción</h3>
+        <button class="btn btn-evaluar" name="accion" value="evaluar">Evaluar</button>
     </div>
+</div>
+</div>
+
+</form>
 
     <script>
         // Escuchar los cambios en cada input de archivo

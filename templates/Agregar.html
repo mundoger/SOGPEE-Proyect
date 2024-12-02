@@ -84,17 +84,17 @@
             <button onclick="showSection('estudiante')">Estudiante</button>
         </nav>
 
-        <form id="cuestionarioForm">
+        <form id="cuestionarioForm" action="/guardartodo" method="post">
             <div id="titulo" class="section active">
                 <h2>Título del Cuestionario</h2>
                 <label for="titulo-cuestionario">Título del proyecto:*</label>
-                <input type="text" id="titulo-cuestionario" name="titulo-cuestionario" required>
+                <input type="text" id="titulo-cuestionario" name="titulocuestionario" required>
                 
                 <label for="num-integrantes">Número de Integrantes:*</label>
-                <input type="number" id="num-integrantes" name="num-integrantes" min="1" max="5" value="1" required>
+                <input type="number" id="num-integrantes" name="numintegrantes" min="1" max="5" value="1" required>
                 
                 <label for="campo3-titulo">Funcion del proyecto:*</label>
-                <input type="text" id="campo3-titulo" name="campo3-titulo" required>
+                <input type="text" id="campo3-titulo" name="FuncionProyecto" required>
             </div>
 
             <div id="asesor-empresarial" class="section">
@@ -167,28 +167,9 @@
         function createEstudianteForm(index) {
             return `
                 <div class="estudiante-form">
-                    <h3>Estudiante ${index + 1}</h3>
-                    <label for="estudiante-${index}-campo1">Matricula:</label>
-                    <input type="text" id="estudiante-${index}-campo1" name="estudiante-${index}-campo1" required>
-                    
-                    <label for="estudiante-${index}-campo2">Nombre (s):*</label>
-                    <input type="text" id="estudiante-${index}-campo2" name="estudiante-${index}-campo2" required>
-                    
-                     <label for="estudiante-${index}-campo2">Segundo Nombre:*</label>
-                    <input type="text" id="estudiante-${index}-campo2" name="estudiante-${index}-campo2" required>
-
-                    <label for="estudiante-${index}-campo3">Apellido Paterno:*</label>
-                    <input type="text" id="estudiante-${index}-campo3" name="estudiante-${index}-campo3" required>
-                    
-                    <label for="estudiante-${index}-campo4">Apellido Materno:*</label>
-                    <input type="text" id="estudiante-${index}-campo4" name="estudiante-${index}-campo4" required>
-                    
-                    <label for="estudiante-${index}-campo5">Correo Institucional:*</label>
-                    <input type="text" id="estudiante-${index}-campo5" name="estudiante-${index}-campo5" required>
-
-                    <label for="estudiante-${index}-campo5">Telefono*</label>
-                    <input type="text" id="estudiante-${index}-campo5" name="estudiante-${index}-campo5" required>
-
+                        <h3>Estudiante ${index + 1}</h3>
+                        <label for="estudiante-${index}-campo1">Matricula:</label>
+                        <input type="text" id="estudiante-${index}-campo1" name="estudiante-${index}-campo1" required>
                 </div>
             `;
         }
@@ -202,14 +183,7 @@
             }
         });
 
-        document.getElementById('cuestionarioForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-            console.log('Datos del formulario:', data);
-            // Aquí puedes agregar la lógica para enviar los datos a tu backend
-            alert('Formulario enviado con éxito!');
-        });
+
 
         // Inicializar el formulario de estudiantes
         document.getElementById('num-integrantes').dispatchEvent(new Event('change'));

@@ -82,4 +82,99 @@ body{
     height: 40px;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: white;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 0.3fr 1px 1fr;
+    gap: 40px;
+}
+
+.divider {
+    background-color: #dee2e6;
+    height: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cartas {
+    background-color: #8bc34a;
+}
+
+.btn-evaluacion {
+    background-color: #00964d;
+}
+
+.btn-proyecto {
+    background-color: #00c853;
+}
+
+.btn-documentos {
+    background-color: #ff5722;
+}
+
+.btn-evaluar {
+    background-color: #0052cc;
+}
+
+.section-title {
+    margin: 24px 0 16px 0;
+    color: #2c3e50;
+}
+header {
+    background-color: white;
+
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.file-input {
+    display: none; /* Oculta el input de archivo */
+}
 
