@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Carga</title>
+    <link rel="stylesheet" href="{{
+        url_for('static',
+        filename='css/carga.css')}}">
+        <script>
+            window.onload = function() {
+                setTimeout(function() {
+                    document.getElementById('formulario').submit();
+                }, 1); 
+            };
+        </script>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <form method="post" action="/asignarEquipo" id="formulario">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
