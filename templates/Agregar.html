@@ -78,9 +78,8 @@
     <div class="container">
         <nav>
             <button onclick="showSection('titulo')" class="active">Título</button>
-            <button onclick="showSection('asesor-empresarial')">Asesor Empresarial</button>
+            <button onclick="showSection('asesor-empresarial')">Empresa / Asesor Empresarial</button>
             <button onclick="showSection('asesor-academico')">Asesor Académico</button>
-            <button onclick="showSection('empresa')">Empresa</button>
             <button onclick="showSection('estudiante')">Estudiante</button>
         </nav>
 
@@ -98,51 +97,32 @@
             </div>
 
             <div id="asesor-empresarial" class="section">
-                <h2>Asesor Empresarial</h2>
-                <label for="asesor-emp-campo1">Nombre:*</label>
-                <input type="text" id="asesor-emp-campo1" name="asesor-emp-campo1" required>
-                
-                <label for="asesor-emp-campo2">Telefono:*</label>
-                <input type="text" id="asesor-emp-campo2" name="asesor-emp-campo2" required>
-                
-                <label for="asesor-emp-campo3">Correo:*</label>
-                <input type="text" id="asesor-emp-campo3" name="asesor-emp-campo3" required>
+                <h2>Empresa / Asesor Empresarial</h2>
+                <label for="asesor-emp-campo1">Empresa y Asesor:*</label>
+                <select name="AsesorEmp" id="AsesorEpm">
+                    <option value="">Buscar</option>
+                    {{cargar | safe}}
+                </select>
             </div>
 
             <div id="asesor-academico" class="section">
                 <h2>Asesor Académico</h2>
                 <label for="asesor-aca-campo1">Nombre:*</label>
-                <input type="text" id="asesor-aca-campo1" name="asesor-aca-campo1" required>
-                
-                <label for="asesor-aca-campo2">Telefono:*</label>
-                <input type="text" id="asesor-aca-campo2" name="asesor-aca-campo2" required>
-                
-                <label for="asesor-aca-campo3">Correo:*</label>
-                <input type="text" id="asesor-aca-campo3" name="asesor-aca-campo3" required>
+                <select name="AsesorAcademico" id="AsesorAcademico">
+                    <option value="">Buscar</option>
+                    {{asesorAcademico | safe}}
+                </select>
             </div>
 
             <div id="empresa" class="section">
-                <h2>Empresa</h2>
-                <label for="empresa-campo1">Nombre:*</label>
-                <input type="text" id="empresa-campo1" name="empresa-campo1" required>
-                
-                <label for="empresa-campo2">Domicilio:*</label>
-                <input type="text" id="empresa-campo2" name="empresa-campo2" required>
-                
-                <label for="empresa-campo3">Carreo:*</label>
-                <input type="text" id="empresa-campo3" name="empresa-campo3" required>
-                
-                <label for="empresa-campo4">Telefono:*</label>
-                <input type="text" id="empresa-campo4" name="empresa-campo4" required>
-                
-                <label for="empresa-campo5">Sector:*</label>
-                <input type="text" id="empresa-campo5" name="empresa-campo5" required>
+                    <label for="empresa-autocomplete">Empresa:</label>
+
             </div>
 
             <div id="estudiante" class="section">
                 <h2>Estudiantes</h2>
                 <div id="estudiantes-container"></div>
-                <button type="submit">Guardar Todo</button>
+                <button type="submit">Asignar</button>
             </div>
         </form>
     </div>
@@ -187,6 +167,6 @@
 
         // Inicializar el formulario de estudiantes
         document.getElementById('num-integrantes').dispatchEvent(new Event('change'));
-    </script>
+    </script>    
 </body>
 </html>

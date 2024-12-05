@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOGPEE</title>
+    <link rel="stylesheet" href="{{
+        url_for('static',
+        filename='css/LoginC.css')
+     }}">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo-upt">
+            <img src="../static/img/logo_upt.png" alt="Logo UPT" height="80">
+        </a>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <div class="login-card">
+                <h1>Iniciar Sesión</h1>
+                <form action="/logincoordinacion2" method="post">
+                    <div class="form-group">
+                        <label for="userInput">Correo electrónico</label>
+                        <input type="text" name="correo" id="userInput" placeholder="Ingrese su correo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">Contraseña</label>
+                        <input type="password" name="password" id="passwordInput" placeholder="Contraseña" required>
+                    </div>
+                    <button type="submit" id="btnLogin">Iniciar sesión</button>
+                    <div class="forgot-password">
+                        <a href="#" id="forgotPsw">Olvidé mi contraseña</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 SOGPEE. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
