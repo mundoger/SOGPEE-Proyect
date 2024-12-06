@@ -61,33 +61,43 @@ def guardartodo():
         guardarEquipo(matricula,equipo,ID)
         return render_template('cargaEquipo.html')
     if numero == '2':
-        matricula = request.form['estudiante-0-campo1']
-        matricula2 = request.form['estudiante-1-campo1']
-        agregarproyectos(titulo,funcion)
-        ID = cargarIDProyecto(titulo)
-        equipo = cargarEquipoMaximo()
-        guardarEquipo2(matricula,matricula2,equipo,ID)
+            matricula = request.form['estudiante-0-campo1']
+            matricula2 = request.form['estudiante-1-campo1']
+            agregarproyectos(titulo,funcion)
+            ID = cargarIDProyecto(titulo)
+            equipo = cargarEquipoMaximo()
+            guardarEquipo2(matricula,matricula2,equipo,ID)
+            return render_template('cargaEquipo.html')
     elif numero == '3':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
-        return f'{matricula} {matricula2} {matricula3}'
-
+        agregarproyectos(titulo,funcion)
+        ID = cargarIDProyecto(titulo)
+        equipo = cargarEquipoMaximo()
+        guardarEquipo3(matricula,matricula2,matricula3,equipo,ID)
+        return render_template('cargaEquipo.html')
     elif numero == '4':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
         matricula4 = request.form['estudiante-3-campo1']
-        return f'{matricula} {matricula2} {matricula3} {matricula4}'
-
+        agregarproyectos(titulo,funcion)
+        ID = cargarIDProyecto(titulo)
+        equipo = cargarEquipoMaximo()
+        guardarEquipo4(matricula,matricula2,matricula3,matricula4,equipo,ID)
+        return render_template('cargaEquipo.html')
     elif numero == '5':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
         matricula4 = request.form['estudiante-3-campo1']
         matricula5 = request.form['estudiante-4-campo1']
-        return f'{matricula} {matricula2} {matricula3} {matricula4} {matricula5}'
-    return 0
+        agregarproyectos(titulo,funcion)
+        ID = cargarIDProyecto(titulo)
+        equipo = cargarEquipoMaximo()
+        guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5,equipo,ID)
+        return render_template('cargaEquipo.html')
 
 @app.route('/enviarDocumentos', methods=['POST'])
 def enviarDocumentos():
@@ -252,31 +262,65 @@ def guardarEquipo(matricula, NoEquipo, ID):
 
 def guardarEquipo2(matricula, matricula2, NoEquipo, ID):
     try:
-        query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula, :NoEquipo, :Id_Proyecto)")
-        query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula, :NoEquipo, :Id_Proyecto)")
-        
-        with engine.connect() as conn:
-            with conn.begin():  # Iniciar una transacción
-                conn.execute(query1, {'Matricula': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
-                conn.execute(query2, {'Matricula': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
-    except Exception as e:
-        raise Exception(f"Error al guardar equipos: {str(e)}")  # Lanza el error al nivel superior
+        query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula1, :NoEquipo, :Id_Proyecto)")
+        query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2, :NoEquipo, :Id_Proyecto)")
 
- 
+        with engine.connect() as conn:
+            with conn.begin():  
+                conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+    except Exception as e:
+        return str(e),400
+
 def guardarEquipo3(matricula,matricula2,matricula3, NoEquipo, ID):
     try:
-        query = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula,:NoEquipo,:Id_Proyecto)")
-        query = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2,:NoEquipo,:Id_Proyecto)")
-        query = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula3,:NoEquipo,:Id_Proyecto)")
+        query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula1, :NoEquipo, :Id_Proyecto)")
+        query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2, :NoEquipo, :Id_Proyecto)")
+        query3 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula3, :NoEquipo, :Id_Proyecto)")
+
         with engine.connect() as conn:
-            conn.execute(query,{'Matricula':matricula,'NoEquipo':NoEquipo,'Id_Proyecto':ID})
-            conn.commit()
-            conn.execute(query,{'Matricula2':matricula2,'NoEquipo':NoEquipo,'Id_Proyecto':ID})
-            conn.commit()
-            conn.execute(query,{'Matricula3':matricula3,'NoEquipo':NoEquipo,'Id_Proyecto':ID})
-            conn.commit()
+            with conn.begin():  
+                conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
     except Exception as e:
-        return str(e), 400
+        return str(e),400
+
+def guardarEquipo4(matricula,matricula2,matricula3,matricula4, NoEquipo, ID):
+    try:
+        query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula1, :NoEquipo, :Id_Proyecto)")
+        query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2, :NoEquipo, :Id_Proyecto)")
+        query3 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula3, :NoEquipo, :Id_Proyecto)")
+        query4 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula4, :NoEquipo, :Id_Proyecto)")
+
+        with engine.connect() as conn:
+            with conn.begin():  
+                conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query4, {'Matricula4': matricula4, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+    except Exception as e:
+        return str(e),400
+
+def guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5, NoEquipo, ID):
+    try:
+        query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula1, :NoEquipo, :Id_Proyecto)")
+        query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2, :NoEquipo, :Id_Proyecto)")
+        query3 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula3, :NoEquipo, :Id_Proyecto)")
+        query4 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula4, :NoEquipo, :Id_Proyecto)")
+        query5 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula5, :NoEquipo, :Id_Proyecto)")
+
+        with engine.connect() as conn:
+            with conn.begin():  
+                conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query4, {'Matricula4': matricula4, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.execute(query5, {'Matricula5': matricula5, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                conn.commit()
+    except Exception as e:
+        return str(e),400
+
 def cargarIDProyecto(nombre):
     try:
         query = text("SELECT ProyectoID FROM proyecto WHERE Nombre = :Nombre")
