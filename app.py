@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,jsonify
+from flask import Flask,render_template,request,redirect,jsonify, url_for
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
@@ -58,7 +58,9 @@ def guardartodo():
         agregarproyectos(titulo,funcion)
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
-        guardarEquipo(matricula,equipo,ID)
+        ok = guardarEquipo(matricula,equipo,ID)
+        if ok != True:
+            return render_template('Error/Error.html',ID=ok)
         return render_template('cargaEquipo.html')
     if numero == '2':
             matricula = request.form['estudiante-0-campo1']
@@ -66,7 +68,9 @@ def guardartodo():
             agregarproyectos(titulo,funcion)
             ID = cargarIDProyecto(titulo)
             equipo = cargarEquipoMaximo()
-            guardarEquipo2(matricula,matricula2,equipo,ID)
+            ok= guardarEquipo2(matricula,matricula2,equipo,ID)
+            if ok != True:
+                return render_template('Error/Error.html',ID=ok)
             return render_template('cargaEquipo.html')
     elif numero == '3':
         matricula = request.form['estudiante-0-campo1']
@@ -75,7 +79,9 @@ def guardartodo():
         agregarproyectos(titulo,funcion)
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
-        guardarEquipo3(matricula,matricula2,matricula3,equipo,ID)
+        ok = guardarEquipo3(matricula,matricula2,matricula3,equipo,ID)
+        if ok != True:
+            return render_template('Error/Error.html',ID=ok)
         return render_template('cargaEquipo.html')
     elif numero == '4':
         matricula = request.form['estudiante-0-campo1']
@@ -85,7 +91,9 @@ def guardartodo():
         agregarproyectos(titulo,funcion)
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
-        guardarEquipo4(matricula,matricula2,matricula3,matricula4,equipo,ID)
+        ok= guardarEquipo4(matricula,matricula2,matricula3,matricula4,equipo,ID)
+        if ok != True:
+            return render_template('Error/Error.html',ID=ok)
         return render_template('cargaEquipo.html')
     elif numero == '5':
         matricula = request.form['estudiante-0-campo1']
@@ -96,7 +104,9 @@ def guardartodo():
         agregarproyectos(titulo,funcion)
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
-        guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5,equipo,ID)
+        ok= guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5,equipo,ID)
+        if ok != True:
+            return render_template('Error/Error.html',ID=ok)
         return render_template('cargaEquipo.html')
 
 @app.route('/enviarDocumentos', methods=['POST'])
@@ -131,9 +141,13 @@ def asignarEquipo():
     asesorAcademico = cargarAsesorAcademico()
     return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico)
 
-
-
-
+@app.route('/borrarID',methods=['POST'])
+def borrarID():
+    ID = request.form['ID']
+    borrarIDproyecto(ID)
+    opcion = cargarAsesorEmp()
+    asesorAcademico = cargarAsesorAcademico()
+    return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico) 
 
 
 
@@ -257,8 +271,9 @@ def guardarEquipo(matricula, NoEquipo, ID):
         with engine.connect() as conn:
             conn.execute(query,{'Matricula':matricula,'NoEquipo':NoEquipo,'Id_Proyecto':ID})
             conn.commit()
+            return True
     except Exception as e:
-        return str(e), 400
+        return ID
 
 def guardarEquipo2(matricula, matricula2, NoEquipo, ID):
     try:
@@ -269,8 +284,9 @@ def guardarEquipo2(matricula, matricula2, NoEquipo, ID):
             with conn.begin():  
                 conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
                 conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                return True
     except Exception as e:
-        return str(e),400
+        return ID
 
 def guardarEquipo3(matricula,matricula2,matricula3, NoEquipo, ID):
     try:
@@ -283,8 +299,9 @@ def guardarEquipo3(matricula,matricula2,matricula3, NoEquipo, ID):
                 conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
                 conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
                 conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                return True
     except Exception as e:
-        return str(e),400
+        return ID
 
 def guardarEquipo4(matricula,matricula2,matricula3,matricula4, NoEquipo, ID):
     try:
@@ -299,10 +316,11 @@ def guardarEquipo4(matricula,matricula2,matricula3,matricula4, NoEquipo, ID):
                 conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
                 conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
                 conn.execute(query4, {'Matricula4': matricula4, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+                return True
     except Exception as e:
-        return str(e),400
+        return ID
 
-def guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5, NoEquipo, ID):
+def guardarEquipo5(matricula, matricula2, matricula3, matricula4, matricula5, NoEquipo, ID):
     try:
         query1 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula1, :NoEquipo, :Id_Proyecto)")
         query2 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula2, :NoEquipo, :Id_Proyecto)")
@@ -311,15 +329,19 @@ def guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5, NoEqui
         query5 = text("INSERT INTO equipos (Matricula, NoEquipo, Id_Proyecto) VALUES (:Matricula5, :NoEquipo, :Id_Proyecto)")
 
         with engine.connect() as conn:
-            with conn.begin():  
+            with conn.begin():
                 conn.execute(query1, {'Matricula1': matricula, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+
                 conn.execute(query2, {'Matricula2': matricula2, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+
                 conn.execute(query3, {'Matricula3': matricula3, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+
                 conn.execute(query4, {'Matricula4': matricula4, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
+
                 conn.execute(query5, {'Matricula5': matricula5, 'NoEquipo': NoEquipo, 'Id_Proyecto': ID})
-                conn.commit()
+                return True
     except Exception as e:
-        return str(e),400
+        return ID 
 
 def cargarIDProyecto(nombre):
     try:
@@ -341,7 +363,18 @@ def cargarEquipoMaximo():
         max_equipos = resultado[0] if resultado[0] is not None else 0
         return max_equipos + 1
 
+def borrarIDproyecto(ID):
+    try:
+        query1 = text("DELETE FROM proyecto WHERE ProyectoID = :ID")        
+        with engine.connect() as conn:
+            with conn.begin():  
+                conn.execute(query1, {'ID': ID})
+            return True 
+    except Exception as e:
+        print(f"Error: {e}") 
+        return False
 
+        
 
 
 
