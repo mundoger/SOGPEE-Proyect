@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios de Estancias y Estadía</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/cuestionario_salida2.css') }}">
+</head>
+<body>
+<header class="header">
+    <nav class="nav container">
+        <a href="#estancia1" class="nav-item active" onclick="showForm('estancia1', this)">ESTANCIA I</a>
+        <a href="#estancia2" class="nav-item" onclick="showForm('estancia2', this)">ESTANCIA II</a>
+        <a href="#estadia" class="nav-item" onclick="showForm('estadia', this)">ESTADÍA</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section id="estancia1" class="form-section active">
+        <h1>INGENIERÍA FINANCIERA</h1>
+        <h1>Formulario de Estancia I</h1>
+        <div class="question-container">
+            <div class="question">
+                <h2 class="question-title">¿CUÁLES SON LAS TRES FUNCIONES PRIORITARIAS QUE LLEVÓ A CABO EL ESTUDIANTE
+                    DURANTE SU ESTANCIA I?</h2>
+                <div class="options-grid">
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="analizar-recursos">
+                            Analizar Recursos-Económicos
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="planificar-recursos">
+                            Planificar de recursos para su uso de forma eficiente
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diagnosticar el estado actual de la organización
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diseñar estrategias financieras
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Formular alternativas optimas de administración
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diagnosticar variables económicas
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Identificar elementos que afectan el desarrollo de la organización
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Analizar variables económicas
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Simular de escenarios para plan estratégico de acción
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Cuantificar impacto en organización
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Estudios técnicos económicos
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Gestionar recursos
+                        </div>
+                    </label>
+                    </label>
+                    <!-- Añade más opciones aquí siguiendo el mismo patrón -->
+                    <label class="option-item other-option">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="otras">
+                        </div>
+                        <input type="text" placeholder="Otras funciones...">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="estancia2" class="form-section">
+        <h1>INGENIERÍA FINANCIERA</h1>
+        <h1>Formulario de Estancia II</h1>
+        <div class="question-container">
+            <div class="question">
+                <h2 class="question-title">¿CUÁLES SON LAS TRES FUNCIONES PRIORITARIAS QUE LLEVÓ A CABO EL ESTUDIANTE
+                    DURANTE SU ESTANCIA II?</h2>
+                <div class>
+                    <div class="options-grid">
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Construir estrategias financieras
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Desarrollar estrategias costo-beneficio
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Diseñar alternativas de negocio
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Gestionar proyectos de inversión
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Sistematizar procesos administrativos mediante las TIC´S
+                            </div>
+                        </label><label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Generar reportes ejecutivos y técnicos para la toma de decisiones
+                        </div>
+                    </label><label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diseñar modelos financieras y económicos
+                        </div>
+                    </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Transferir tecnología y conocimiento para la creación de negocios inteligentes
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Desarrollo de negocios inteligentes
+                            </div>
+                        </label>
+                        <label class="option-item">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                                Análisis de tendencias y hábitos del mercado
+                            </div>
+                        </label>
+                        <label class="option-item other-option">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" name="funcion-estancia1" value="otras">
+                            </div>
+                            <input type="text" placeholder="Otras funciones...">
+                        </label>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <section id="estadia" class="form-section">
+        <h1>INGENIERÍA FINANCIERA</h1>
+        <h1>Formulario de Estadía</h1>
+        <div class="question-container">
+            <div class="question">
+                <h2 class="question-title">¿CUÁLES SON LAS TRES FUNCIONES PRIORITARIAS QUE LLEVÓ A CABO EL ESTUDIANTE
+                    DURANTE SU ESTADÍA?</h2>
+                <div class="options-grid">
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Identificar variables económicas, contables, legales y administrativas
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Aplicar fundamentos matemáticos y estadísticos
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diagnosticar aspectos financieros
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diagnosticar variables del entorno económico
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Evaluar proyectos con base a variables del entorno económico
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Diseñar modelos financieros aplicando las TIC´s
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Construir proyectos de inversión
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Transferencia tecnológica en el sector
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Integración de estrategias financieras, bursátiles y empresariales
+                        </div>
+                    </label>
+                    <label class="option-item">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="diagnosticar-estado">
+                            Optimizar recursos
+                        </div>
+                    </label>
+                    <label class="option-item other-option">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" name="funcion-estancia1" value="otras">
+                        </div>
+                        <input type="text" placeholder="Otras funciones...">
+                    </label>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div>
+            <label for="">¿EL PROYECTO RESOLVIÓ SU NECESIDAD ?</label><br>
+            <input type="radio"> Si
+            <br>
+            <input type="radio"> No
+        </div>
+        <div>
+            <label for="">LE INTERESARÍA PARTICIPAR EN PROYECTOS DE INVESTIGACIÓN Y DESARROLLO TECNOLÓGICO, ASESORADOS
+                POR LA UNIVERSIDAD POLITÉCNICA DE TECÁMAC?</label>
+            <input type="radio"> Si
+            <br>
+            <input type="radio"> No
+        </div>
+        <div>
+            <label for="">¿REALIZA INVESTIGACIÓN Y DESARROLLO EN SU EMPRESA?</label>
+            <input type="radio"> Si
+            <br>
+            <input type="radio"> No
+        </div>
+        <div>
+            <label for="">¿ESTARÍA USTED DISPUESTO A CONTRATAR A EGRESADOS DE LA UNIVERSIDAD POLITÉCNICA DE
+                TECÁMAC?</label>
+            <input type="radio"> Si
+            <br>
+            <input type="radio"> No
+            <br>
+
+            <label for="">¿POR QUÉ?</label><br>
+            <input type="text">
+
+        </div>
+        <div>
+            <label for="">¿APRUEBA LA EDICIÓN ELECTRÓNICA Y/O IMPRESA DE LA VERSIÓN FINAL DEL
+                PROYECTO?</label>
+            <input type="radio"> Si
+            <br>
+            <input type="radio"> No
+        </div>
+        <div>
+            <label for="">CLÁUSULA ESPECIAL DE LAS CONDICIONES DE EDICIÓN POR PARTE DEL ASESOR
+                EMPRESARIAL (EN CASO DE EXISTIR)</label><br>
+
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+    </section>
+</main>
+
+<script>
+    function showForm(formId, clickedItem) {
+        // Ocultar todos los formularios
+        document.querySelectorAll('.form-section').forEach(form => {
+            form.classList.remove('active');
+        });
+
+        // Mostrar el formulario seleccionado
+        document.getElementById(formId).classList.add('active');
+
+        // Actualizar la clase activa en el menú
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        clickedItem.classList.add('active');
+    }
+</script>
+</body>
+</html>
