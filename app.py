@@ -113,21 +113,16 @@ def guardartodo():
 def enviarDocumentos():
     parcial = request.form['parcial']
     nombre = request.form['nombre']
-    accion = request.form.get('accion')
     cartas = request.files.get('cartas')
     proyecto = request.files.get('proyecto')
     evaluacion = request.files.get('evaluacion3')
     matricula = request.form['matricula']
     correo = request.form['correo']
-    if accion == 'evaluar':
-        return 'evaluaciom'
-    elif accion == 'enviar':
-        guardarCartas(cartas,parcial,nombre,matricula)
-        guardarProyectos(proyecto,parcial,nombre,matricula)
-        guardar03(evaluacion,parcial,nombre,matricula)
-        return render_template('carga.html', matricula=matricula,correo=correo)
-    else:
-        return 'accion desconocida'
+    ruta_carta = guardarCartas(cartas,parcial,nombre,matricula)
+    ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)
+    ruta_03 = guardar03(evaluacion,parcial,nombre,matricula)
+    guardarRutaDocumentos(matricula,ruta_carta,ruta_03,ruta_proyecto,parcial)
+    return render_template('carga.html', matricula=matricula,correo=correo)
 
 @app.route('/agregar',methods=['POST'])
 def agregar():
@@ -149,10 +144,42 @@ def borrarID():
     asesorAcademico = cargarAsesorAcademico()
     return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico) 
 
+@app.route('/encuestaSatisfaccion',methods=['POST'])
+def encuestaSatisfaccion():
+    Matricula = request.form['Matricula']
+    Correo = request.form['correo']
+    return render_template('Cuestionarios/evaluacion_cuestionario.html',Matricula = Matricula,correo = Correo)
+
+@app.route('/EvalulacionEstudiante',methods=['POST'])
+def enviarEvaluacionEstudiante():
+    matricula = request.form['Matricula']
+    correo = request.form['correo']
+    question11 = int(request.form['question11'])
+    question12 = int(request.form['question12'])
+    question13 = int(request.form['question13'])
+    question14 = int(request.form['question14'])
+    question15 = int(request.form['question15'])
+    question16 = int(request.form['question16'])
+    question17 = int(request.form['question17'])
+    question18 = int(request.form['question18'])
+    question19 = int(request.form['question19'])
+    veracidad = request.form['veracidad']  
+    prom = promedio(question11,question12,question13,question14,question15,question16,question17,question18,question19)
+    guardarForm08(prom,veracidad,matricula)
+    return render_template('Cargas/EnvioEvaluacionEstudiante.html',matricula = matricula,correo = correo)
+
+
+
+
+
+
+
+
 
 
 
 def inicioSesionEstudiante(matricula,correo):
+    proyecto = cargarProyectoAlumno(matricula)
     try:
         query = text("SELECT Matricula,Nombre1,Nombre2,ApellidoP,ApellidoM,Telefono,Correo FROM estudiante WHERE matricula = :matricula AND correo =:correo")
         with engine.connect() as conn:
@@ -165,7 +192,7 @@ def inicioSesionEstudiante(matricula,correo):
                 ApellidoM = ok[4]
                 Telefono = ok[5]
                 Correo = ok[6]
-                return render_template('/perfiles/evaluacionEstudiante.html',Matricula=Matricula,Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo)
+                return render_template('/perfiles/evaluacionEstudiante.html',Matricula=Matricula,Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo,proyecto = proyecto)
             else:
                 return 'no encontado'
     except Exception as e:
@@ -222,6 +249,7 @@ def guardarCartas(archivo,parcial,nombre,matricula):
         return 'debe ser un archivo pdf'
     ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
     archivo.save(ruta_guardado)
+    return ruta_guardado
 
 def guardarProyectos(archivo,parcial,nombre,matricula):
     base_folder = os.path.join('Documentos',matricula,parcial)
@@ -235,6 +263,7 @@ def guardarProyectos(archivo,parcial,nombre,matricula):
         return 'debe ser un archivo pdf'
     ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
     archivo.save(ruta_guardado)
+    return ruta_guardado
     
 def guardar03(archivo,parcial,nombre,matricula):
     base_folder = os.path.join('Documentos',matricula,parcial)
@@ -248,6 +277,7 @@ def guardar03(archivo,parcial,nombre,matricula):
         return 'debe ser un archivo pdf'
     ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
     archivo.save(ruta_guardado)
+    return ruta_guardado
 
 def cargarAsesorEmp():
     query = text("SELECT Nombre1,Nombre2,ApellidoP,ApellidoM,Empresa from asesorempresarial ORDER BY Empresa")
@@ -374,11 +404,36 @@ def borrarIDproyecto(ID):
         print(f"Error: {e}") 
         return False
 
-        
+def cargarProyectoAlumno(Matricula):
+    query = text("SELECT p.Nombre FROM estudiante est JOIN equipos e ON est.Matricula = e.Matricula JOIN proyecto p ON e.Id_Proyecto = p.ProyectoID WHERE est.Matricula = :Matricula")
+    with engine.connect() as conn:
+        resultado = conn.execute(query,{'Matricula':Matricula}).fetchone()
+        return resultado[0]
 
+def guardarRutaDocumentos(matricula,ruta_carta,ruta_03,ruta_proyecto,parcial):
+    try:
+        query = text("INSERT INTO documentos (Matricula, Carta, FO03,Proyecto,Parcial) VALUES (:Matricula,:ruta_carta,:ruta_03,:ruta_proyecto,:parcial)")
+        with engine.connect() as conn:
+            conn.execute(query,{'Matricula':matricula,'ruta_carta':ruta_carta,'ruta_03':ruta_03,'ruta_proyecto':ruta_proyecto,'parcial':parcial})
+            conn.commit()
+            return True
+    except Exception as e:
+        return f'-------------Error {e}'
 
+def promedio(question11,question12,question13,question14,question15,question16,question17,question18,question19):
+    promedio = (question11+question12+question13+question14+question15+question16+question17+question18+question19)/9
+    promedio = round(promedio,2)
+    return promedio
 
-
+def guardarForm08(promedio,veracidad,matricula):
+    try:
+        query = text("INSERT INTO encuesta08 (Promedio, Veracidad, Matricula) VALUES (:Promedio,:Veracidad,:Matricula)")
+        with engine.connect() as conn:
+            conn.execute(query,{'Promedio':promedio,'Veracidad':veracidad,'Matricula':matricula})
+            conn.commit()
+            return True
+    except Exception as e:
+        return f'error---------------->{e}'
 
 
 

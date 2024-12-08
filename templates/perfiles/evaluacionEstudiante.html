@@ -4,116 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario UPT</title>
-    <link rel="stylesheet" href="{{
-        url_for('static',
-        filename='css/evaluacionEstudiante.css')
-    }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluacionEstudiante.css') }}">
 </head>
 <body>
 <header class="container-fluid d-flex justify-content-center p-2">
-            <div class="logoUPT" >
-                <a href="/" class="logo-upt">
-                    <img src="../static/img/logo_upt.png" alt="Logo UPT" height="80">
-                </a>
-            </div>
-
-
-            
-
-            
+    <div class="logoUPT">
+        <a href="/" class="logo-upt">
+            <img src="../static/img/logo_upt.png" alt="Logo UPT" height="80">
+        </a>
+    </div>
 </header><br>
-    <div class="container">
-        <div class="form-container">
-            <!-- Columna izquierda -->
-            <div class="left-column">
-                <div class="form-group">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" value="{{Nombre1}} {{Nombre2}}" disabled>
+
+<div class="container">
+    <div class="form-container">
+        <!-- Columna izquierda -->
+        <div class="left-column">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="{{Nombre1}} {{Nombre2}}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula" name="matricula" value="{{Matricula}}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" value="{{Telefono}}" disabled>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo:</label>
+                <input type="email" id="correo" name="correo" value="{{Correo}}" disabled>
+            </div>
+        </div>
+
+        <!-- Divisor vertical -->
+        <div class="divider"></div>
+
+        <div>
+            <form action="/enviarDocumentos" method="post" enctype="multipart/form-data">
+                <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
+                <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
+                <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+    
+                <!-- Columna derecha -->
+                <div class="right-column">
+                    <div class="form-group">
+                        <label for="parcial">Selecciona parcial</label>
+                        <select id="parcial" name="parcial" required>
+                            <option value="">...Seleccionar...</option>
+                            <option value="Parcial1">Parcial 1</option>
+                            <option value="Parcial2">Parcial 2</option>
+                            <option value="Parcial3">Parcial 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="titulo">Título del proyecto</label>
+                        <input type="text" value="{{proyecto}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="asesor">Asesor empresarial</label>
+                        <select id="asesor" name="asesor">
+                            <option value="">...Seleccionar...</option>
+                        </select>
+                    </div>
+    
+                    <h3 class="section-title">Adjuntar expediente</h3>
+                    <div class="buttons-container">
+                        <label for="file-cartas" class="btn btn-cartas">Cartas</label>
+                        <input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf" required>
+    
+                        <!-- Botón "Evaluación 03" -->
+                        <label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
+                        <input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf" required>
+    
+                        <!-- Botón "Proyecto" -->
+                        <label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
+                        <input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf" required>
+    
+                        <br>
+                        <button class="btn btn-documentos" name="accion" value="enviar">Subir documentos</button>
+                    </div>
+    
                 </div>
-                <div class="form-group">
-                    <label for="matricula">Matrícula:</label>
-                    <input type="text" id="matricula" name="matricula" value="{{Matricula}}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="tel" id="telefono" name="telefono" value="{{Telefono}}" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="correo">Correo:</label>
-                    <input type="email" id="correo" name="correo" value="{{Correo}}" disabled>
-                </div>
+            </form>
+            <div class="encuesta-container">
+                <form action="/encuestaSatisfaccion" method="post">
+                    <h3 class="section-title">Encuesta de satisfacción</h3>
+                    <input type="hidden" name="Matricula" value="{{Matricula}}">
+                    <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                    <button class="btn btn-evaluar" name="accion" value="evaluar">Evaluar</button>
+                </form>
             </div>
 
-            <!-- Divisor vertical -->
-            <div class="divider"></div>
-<form action="/enviarDocumentos" method="post" enctype="multipart/form-data">
-    <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
-    <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}" >
-    <input type="hidden" id="correo" name="correo" value="{{Correo}}" >
-    <div class="right-column">
-        <div class="form-group">
-            <label for="parcial">Selecciona parcial</label>
-            <select id="parcial" name="parcial" required>
-                <option value="">...Seleccionar...</option>
-                <option value="Parcial1">Parcial 1</option>
-                <option value="Parcial2">Parcial 2</option>
-                <option value="Parcia3">Parcial 3</option>
-
-            </select>
         </div>
-        <div class="form-group">
-            <label for="titulo">Título del proyecto</label>
-            <select id="titulo" name="titulo">
-                <option value="">...Seleccionar...</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="asesor">Asesor empresarial</label>
-            <select id="asesor" name="asesor">
-                <option value="">...Seleccionar...</option>
-            </select>
-        </div>
-
-        <h3 class="section-title">Adjuntar expediente</h3>
-        <div class="buttons-container">
-
-        <label for="file-cartas" class="btn btn-cartas">Cartas</label>
-<input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf" required>
-
-<!-- Botón "Evaluación 03" -->
-<label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
-<input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf" required>
-
-<!-- Botón "Proyecto" -->
-<label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
-<input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf" required>
-
-            <br>
-            <button class="btn btn-documentos" name="accion" value="enviar">Subir documentos</button>
-        </div>
-
-        <h3 class="section-title">Encuesta de satisfacción</h3>
-        <button class="btn btn-evaluar" name="accion" value="evaluar">Evaluar</button>
     </div>
 </div>
-</div>
 
-</form>
+<script>
+    // Escuchar los cambios en cada input de archivo
+    document.getElementById('file-cartas').addEventListener('change', function(event) {
+        alert('Archivo "Cartas" seleccionado: ' + event.target.files[0].name);
+    });
 
-    <script>
-        // Escuchar los cambios en cada input de archivo
-        document.getElementById('file-cartas').addEventListener('change', function(event) {
-            alert('Archivo "Cartas" seleccionado: ' + event.target.files[0].name);
-        });
+    document.getElementById('file-evaluacion').addEventListener('change', function(event) {
+        alert('Archivo "Evaluación 03" seleccionado: ' + event.target.files[0].name);
+    });
 
-        document.getElementById('file-evaluacion').addEventListener('change', function(event) {
-            alert('Archivo "Evaluación 03" seleccionado: ' + event.target.files[0].name);
-        });
-
-        document.getElementById('file-proyecto').addEventListener('change', function(event) {
-            alert('Archivo "Proyecto" seleccionado: ' + event.target.files[0].name);
-        });
-    </script>
+    document.getElementById('file-proyecto').addEventListener('change', function(event) {
+        alert('Archivo "Proyecto" seleccionado: ' + event.target.files[0].name);
+    });
+</script>
 </body>
 </html>
