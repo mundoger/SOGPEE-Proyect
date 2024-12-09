@@ -72,6 +72,14 @@
             margin-bottom: 10px;
             border-radius: 4px;
         }
+#txtmin {
+font-size: 12px;          
+color: #808080;          
+font-style: italic;       
+margin-top: 0px;        
+margin-bottom: 0px;      
+}
+
     </style>
 </head>
 <body>
@@ -97,16 +105,16 @@
 
             <div id="asesor-empresarial" class="section">
                 <label for="asesor-emp-campo1">Empresa y Asesor:*</label>
-                <select name="AsesorEmp" id="AsesorEpm">
-                    <option value="">Buscar</option>
+                <p id="txtmin">Seleccionar</p>
+                <select name="AsesorEmpresarial" id="AsesorEpm">
                     {{cargar | safe}}
                 </select>
             </div>
 
             <div id="asesor-academico" class="section">
                 <label for="asesor-aca-campo1">Nombre:*</label>
+                <p id="txtmin">Seleccionar</p>
                 <select name="AsesorAcademico" id="AsesorAcademico">
-                    <option value="">Buscar</option>
                     {{asesorAcademic | safe}}
                 </select>
             </div>

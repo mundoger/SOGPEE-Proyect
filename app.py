@@ -53,15 +53,18 @@ def guardartodo():
     titulo = request.form['titulocuestionario']
     funcion = request.form['FuncionProyecto']
     numero = request.form['numintegrantes']
+    asesorA = request.form['AsesorAcademico']
+    asesorE = request.form['AsesorEmpresarial']
     if numero == '1':
         matricula = request.form['estudiante-0-campo1']
         agregarproyectos(titulo,funcion)
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
         ok = guardarEquipo(matricula,equipo,ID)
+        guardarProyectoAsesores(ID,asesorE,asesorA)
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
-        return render_template('cargaEquipo.html')
+        return render_template('Cargas/cargaEquipo.html')
     if numero == '2':
             matricula = request.form['estudiante-0-campo1']
             matricula2 = request.form['estudiante-1-campo1']
@@ -69,9 +72,10 @@ def guardartodo():
             ID = cargarIDProyecto(titulo)
             equipo = cargarEquipoMaximo()
             ok= guardarEquipo2(matricula,matricula2,equipo,ID)
+            guardarProyectoAsesores(ID,asesorE,asesorA)
             if ok != True:
                 return render_template('Error/Error.html',ID=ok)
-            return render_template('cargaEquipo.html')
+            return render_template('Cargas/cargaEquipo.html')
     elif numero == '3':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
@@ -80,9 +84,10 @@ def guardartodo():
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
         ok = guardarEquipo3(matricula,matricula2,matricula3,equipo,ID)
+        guardarProyectoAsesores(ID,asesorE,asesorA)
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
-        return render_template('cargaEquipo.html')
+        return render_template('Cargas/cargaEquipo.html')
     elif numero == '4':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
@@ -92,9 +97,11 @@ def guardartodo():
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
         ok= guardarEquipo4(matricula,matricula2,matricula3,matricula4,equipo,ID)
+        guardarProyectoAsesores(ID,asesorE,asesorA)
+
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
-        return render_template('cargaEquipo.html')
+        return render_template('Cargas/cargaEquipo.html')
     elif numero == '5':
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
@@ -105,9 +112,10 @@ def guardartodo():
         ID = cargarIDProyecto(titulo)
         equipo = cargarEquipoMaximo()
         ok= guardarEquipo5(matricula,matricula2,matricula3,matricula4,matricula5,equipo,ID)
+        guardarProyectoAsesores(ID,asesorE,asesorA)
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
-        return render_template('cargaEquipo.html')
+        return render_template('Cargas/cargaEquipo.html')
 
 @app.route('/enviarDocumentos', methods=['POST'])
 def enviarDocumentos():
@@ -168,8 +176,23 @@ def enviarEvaluacionEstudiante():
     guardarForm08(prom,veracidad,matricula)
     return render_template('Cargas/EnvioEvaluacionEstudiante.html',matricula = matricula,correo = correo)
 
+@app.route('/loginAsesorAcademico',methods=['POST'])
+def loginAsesorAcademico():
+    correo = request.form['correo']
+    password = request.form['password']
+    resultado = inicioSesionAsesorA(correo,password)
+    return resultado
 
-
+@app.route('/AbrirExpediente',methods=['POST'])
+def AbrirExpediente():
+    nombre_completo = request.form['nombre']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    ID = request.form['ID']
+    partes = nombre_completo.split()
+    nombre1,nombre2,apellidop,apellidom = partes
+    resultado = cargarProyectosAsesor(ID)
+    return render_template('/perfiles/AsesorAcademico/revisar_expediente.html',Nombre1 = nombre1,Nombre2 = nombre2,ApellidoP = apellidop,ApellidoM = apellidom,Telefono = telefono,Correo = correo,resultado = resultado)
 
 
 
@@ -280,19 +303,19 @@ def guardar03(archivo,parcial,nombre,matricula):
     return ruta_guardado
 
 def cargarAsesorEmp():
-    query = text("SELECT Nombre1,Nombre2,ApellidoP,ApellidoM,Empresa from asesorempresarial ORDER BY Empresa")
+    query = text("SELECT AsesorID,Nombre1,Nombre2,ApellidoP,ApellidoM,Empresa from asesorempresarial ORDER BY Empresa")
     with engine.connect() as conn:
         ok= conn.execute(query)
         if ok:
-            opciones = ''.join([f'<option value="{row[4]} {row[0]} {row[1]} {row[2]} {row[3]}">{row[4]} - {row[0]} {row[1]} {row[2]} {row[3]}</option>' for row in ok])
+            opciones = ''.join([f'<option value="{row[0]}">{row[5]} - {row[3]} {row[4]} {row[1]} {row[2]}</option>' for row in ok])
             return opciones
 
 def cargarAsesorAcademico():
-    query = text("SELECT Nombre1,Nombre2,ApellidoP,ApellidoM from asesoracademico ORDER BY ApellidoP")
+    query = text("SELECT Id,Nombre1,Nombre2,ApellidoP,ApellidoM from asesoracademico ORDER BY ApellidoP")
     with engine.connect() as conn:
         ok= conn.execute(query)
         if ok:
-            opciones = ''.join([f'<option value="{row[0]}">{row[2]} {row[3]} {row[0]} {row[1]} </option>' for row in ok])
+            opciones = ''.join([f'<option value="{row[0]}">{row[3]} {row[4]} {row[1]} {row[2]} </option>' for row in ok])
             return opciones
 
 def guardarEquipo(matricula, NoEquipo, ID):
@@ -435,11 +458,59 @@ def guardarForm08(promedio,veracidad,matricula):
     except Exception as e:
         return f'error---------------->{e}'
 
+def guardarProyectoAsesores(ID,asesorE,asesorA):
+    try:
+        query = text("INSERT INTO proyectoasesores (Id_asesorE, Id_asesorA, Id_proyecto) VALUES (:asesorE,:asesorA,:ID)")
+        with engine.connect() as conn:
+            conn.execute(query,{'asesorE':asesorE,'asesorA':asesorA,'ID':ID})
+            conn.commit()
+            return True
+    except Exception as e:
+        return f'error---------------->{e}'    
 
+def inicioSesionAsesorA(correo,password):
+    try:
+        query = text("SELECT Nombre1,Nombre2,ApellidoP,ApellidoM,Telefono,Correo,Id FROM asesoracademico WHERE password = :password AND Correo =:correo")
+        with engine.connect() as conn:
+            ok= conn.execute(query, {'password': password,'correo':correo}).fetchone()
+            if ok:
+                Nombre1 = ok[0]
+                Nombre2 = ok[1]
+                ApellidoP = ok[2]
+                ApellidoM = ok[3]
+                Telefono = ok[4]
+                Correo = ok[5]
+                ID = ok[6]
+                return render_template('/perfiles/AsesorAcademico/asesor.html',Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo,ID = ID)
+            else:
+                return 'no encontado'
+    except Exception as e:
+            return f'error {e}'
 
-
-
-
+def cargarProyectosAsesor(ID):
+    try:
+        query = text('''SELECT 
+        p.Nombre AS NombreProyecto
+        FROM 
+        asesoracademico a
+        JOIN 
+        proyectoasesores pa
+        ON 
+        a.Id = pa.Id_asesorA
+        JOIN 
+        proyecto p
+        ON 
+        pa.Id_proyecto = p.ProyectoID
+        WHERE a.Id = :ID;''')
+        with engine.connect() as conn:
+            ok= conn.execute(query, {'ID': ID}).fetchall()
+            if ok:
+                opciones_html = "".join(f'<option value="{resultado[0]}">{resultado[0]}</option>' for resultado in ok)
+            else:
+                opciones_html ='<option value="">Nada por mostrar</option>'
+            return opciones_html
+    except Exception as e:
+        return None
 
 
 
