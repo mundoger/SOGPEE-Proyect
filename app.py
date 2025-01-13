@@ -122,23 +122,25 @@ def guardartodo():
 def enviarDocumentos():
     parcial = request.form['parcialR']
     nombre = request.form['nombre']
-
+    proyectoN = request.form['proyectoR']
     cartas = request.files.get('cartas')
     proyecto = request.files.get('proyecto')
     evaluacion = request.files.get('evaluacion3')
-
     matricula = request.form['matricula']
     correo = request.form['correo']
-    if cartas is None and proyecto is None: #Se valida si la carta y el proyecto estan vacios
-        ruta_03 = guardar03(evaluacion,parcial,nombre,matricula) #Se obtiene la ruta del archivo 03
-        guardarRuta03(matricula,ruta_03,parcial) #Se guarda la ruta del archivo 03 en la base de datos
-    if proyecto is None and evaluacion is None: #Se valida si el proyecto y la evaluacion estan vacios
-        ruta_carta = guardarCartas(cartas,parcial,nombre,matricula) #Se obtiene la ruta de la carta
-        guardarCartass(matricula,ruta_carta,parcial)#Se guarda la ruta de la carta en la base de datos
-    if cartas is None and evaluacion is None:#Se valida si la carta y la evaluacion estan vacios
-        ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)#Se obtiene la ruta del proyecto
-        guardarRutaDocumentos(matricula,ruta_proyecto,parcial)#Se guarda la ruta del proyecto en la base de datos
-        
+    if parcial != "":
+        if cartas is None and proyecto is None: #Se valida si la carta y el proyecto estan vacios
+            ruta_03 = guardar03(evaluacion,parcial,nombre,matricula) #Se obtiene la ruta del archivo 03
+            guardarRuta03(matricula,ruta_03,parcial) #Se guarda la ruta del archivo 03 en la base de datos
+        if proyecto is None and evaluacion is None: #Se valida si el proyecto y la evaluacion estan vacios
+            ruta_carta = guardarCartas(cartas,parcial,nombre,matricula) #Se obtiene la ruta de la carta
+            guardarCartass(matricula,ruta_carta,parcial)#Se guarda la ruta de la carta en la base de datos
+        if cartas is None and evaluacion is None:#Se valida si la carta y la evaluacion estan vacios
+            ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)#Se obtiene la ruta del proyecto
+            guardarRutaDocumentos(matricula,ruta_proyecto,parcial,proyectoN)#Se guarda la ruta del proyecto en la base de datos
+    else:
+        return render_template('error/errorParcial.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
+
     return render_template('cargas/carga.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
 #Funcion para cargar los asesores
 @app.route('/agregar',methods=['POST'])
@@ -205,6 +207,7 @@ def AbrirExpediente():
 
 @app.route('/verArchivo',methods=['POST'])
 def abrirExpediente():
+    proyecto = request.form['proyecto']
     return render_template('perfiles/AsesorAcademico/abrirExpediente.html')
 
 @app.route('/calificarExpediente',methods=['POST'])
@@ -455,13 +458,13 @@ def cargarProyectoAlumno(Matricula):
         resultado = conn.execute(query,{'Matricula':Matricula}).fetchone()
         return resultado[0]
 
-def guardarRutaDocumentos(matricula,ruta_proyecto,parcial):
+def guardarRutaDocumentos(matricula,ruta_proyecto,parcial,NombreProyecto):
     docExiste = documentoExiste(matricula,parcial)
     if docExiste != True:
         try:
-            query = text("INSERT INTO documentos (Matricula,Proyecto,Parcial) VALUES (:Matricula,:ruta_proyecto,:parcial)")
+            query = text("INSERT INTO documentos (Matricula,Proyecto,Parcial,NombreProyecto) VALUES (:Matricula,:ruta_proyecto,:parcial,:NombreProyecto)")
             with engine.connect() as conn:
-                conn.execute(query,{'Matricula':matricula,'ruta_proyecto':ruta_proyecto,'parcial':parcial})
+                conn.execute(query,{'Matricula':matricula,'ruta_proyecto':ruta_proyecto,'parcial':parcial,'NombreProyecto':NombreProyecto})
                 conn.commit()
                 return True
         except Exception as e:
@@ -609,3 +612,29 @@ def cartasExiste(matricula,parcial):
             return True
         else:
             return False
+        
+def descargarPDF(ruta):
+    pdf_ruta = ruta
+    try:
+        return send_file(pdf_ruta,as_attachment=True)
+    except Exception as e:
+        return f"Error {e}"
+    
+def obtenerRutaPDF(proyecto):
+    try:
+        query = text("SELECT Proyecto FROM documentos WHERE Proyecto = :Proyecto")
+        with engine.connect() as conn:
+            conn.execute(query,{'Promedio':promedio,'Veracidad':veracidad,'Matricula':matricula})
+            conn.commit()
+            return True
+    except Exception as e:
+        return f'error---------------->{e}'
+    
+
+
+
+
+
+
+
+

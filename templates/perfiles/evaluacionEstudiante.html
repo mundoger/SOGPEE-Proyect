@@ -75,6 +75,8 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
                         </form>
                         
                         <form id="form-evaluacion" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
@@ -86,6 +88,8 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
                         </form>
                         
                         <form id="form-proyecto" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
@@ -97,6 +101,8 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
                         </form>
                         
                         
@@ -175,20 +181,26 @@
 
             // Referenciar el select y el span
     const selectElement = document.getElementById('parcial');
+    const selectElement2 = document.getElementById('parcial');
+    const selectElement3 = document.getElementById('parcial');
     const resultadoSpan = document.getElementById('resultado');
     const resultadoSpan2 = document.getElementById('resultado2');
     const resultadoSpan3 = document.getElementById('resultado3');
 
-        // Agregar un listener para el cambio en el select
     selectElement.addEventListener('change', function() {
-            // Obtener el texto de la opción seleccionada
     const textoSeleccionado = selectElement.options[selectElement.selectedIndex].value;
-            
-            // Actualizar el contenido del span
     resultadoSpan.value = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
-    resultadoSpan2.textContent = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
-    resultadoSpan3.textContent = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
+        });
 
+    selectElement2.addEventListener('change', function() {
+    const textoSeleccionado2 = selectElement2.options[selectElement2.selectedIndex].value;
+    resultadoSpan2.value = textoSeleccionado2 !== "--Selecciona una opción--" ? textoSeleccionado2 : "Ninguno";
+        });
+
+
+    selectElement3.addEventListener('change', function() {
+    const textoSeleccionado3 = selectElement3.options[selectElement3.selectedIndex].value;
+    resultadoSpan3.value = textoSeleccionado3 !== "--Selecciona una opción--" ? textoSeleccionado3 : "Ninguno";
         });
 </script>
 
