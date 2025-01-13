@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,jsonify, url_for
+from flask import Flask,render_template,request,redirect,jsonify, url_for,send_file
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
@@ -139,7 +139,7 @@ def enviarDocumentos():
         ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)#Se obtiene la ruta del proyecto
         guardarRutaDocumentos(matricula,ruta_proyecto,parcial)#Se guarda la ruta del proyecto en la base de datos
         
-    return render_template('carga.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
+    return render_template('cargas/carga.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
 #Funcion para cargar los asesores
 @app.route('/agregar',methods=['POST'])
 def agregar():
@@ -191,7 +191,7 @@ def loginAsesorAcademico():
     password = request.form['password']
     resultado = inicioSesionAsesorA(correo,password)
     return resultado
-
+#Funcion para cargar la pagina de revisar expediente
 @app.route('/AbrirExpediente',methods=['POST'])
 def AbrirExpediente():
     nombre_completo = request.form['nombre']
@@ -203,7 +203,23 @@ def AbrirExpediente():
     resultado = cargarProyectosAsesor(ID)
     return render_template('/perfiles/AsesorAcademico/revisar_expediente.html',Nombre1 = nombre1,Nombre2 = nombre2,ApellidoP = apellidop,ApellidoM = apellidom,Telefono = telefono,Correo = correo,resultado = resultado)
 
+@app.route('/verArchivo',methods=['POST'])
+def abrirExpediente():
+    return render_template('perfiles/AsesorAcademico/abrirExpediente.html')
 
+@app.route('/calificarExpediente',methods=['POST'])
+def calificarExpediente():
+    nombre = request.form['nombre']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    return render_template('perfiles/AsesorAcademico/calificar_expediente.html',nombre = nombre,telefono = telefono,correo = correo)
+
+@app.route('/calificarSer',methods=['POST'])
+def calificarSer():
+    nombre = request.form['nombre']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    return render_template('perfiles/AsesorAcademico/calificar_ser.html',nombre = nombre,telefono = telefono,correo = correo)
 
 
 
