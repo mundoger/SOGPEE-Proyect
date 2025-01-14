@@ -207,6 +207,7 @@ def AbrirExpediente():
 
 @app.route('/verArchivo',methods=['POST'])
 def abrirExpediente():
+    parcial = request.form['parcialB']
     proyecto = request.form['proyecto']
     return render_template('perfiles/AsesorAcademico/abrirExpediente.html')
 
@@ -456,7 +457,10 @@ def cargarProyectoAlumno(Matricula):
     query = text("SELECT p.Nombre FROM estudiante est JOIN equipos e ON est.Matricula = e.Matricula JOIN proyecto p ON e.Id_Proyecto = p.ProyectoID WHERE est.Matricula = :Matricula")
     with engine.connect() as conn:
         resultado = conn.execute(query,{'Matricula':Matricula}).fetchone()
-        return resultado[0]
+        if resultado:
+            return resultado[0]
+        else:
+            return 'No asignado'
 
 def guardarRutaDocumentos(matricula,ruta_proyecto,parcial,NombreProyecto):
     docExiste = documentoExiste(matricula,parcial)
@@ -583,7 +587,10 @@ JOIN
     WHERE p.Nombre = :NombreProyecto''')
     with engine.connect() as conn:
         resultado = conn.execute(query,{'NombreProyecto':Proyecto}).fetchone()
-        return resultado[0]
+        if resultado:
+            return resultado[0]
+        else:
+            return 'No asignado'
 
 def documentoExiste(matricula,parcial):
     query = text("SELECT Proyecto FROM documentos WHERE Matricula = :Matricula AND Parcial = :Parcial")
@@ -620,13 +627,14 @@ def descargarPDF(ruta):
     except Exception as e:
         return f"Error {e}"
     
-def obtenerRutaPDF(proyecto):
+def obtenerRutaPDF(proyecto,parcial):
     try:
-        query = text("SELECT Proyecto FROM documentos WHERE Proyecto = :Proyecto")
+        query = text("SELECT Proyecto FROM documentos WHERE NombreProyecto = :NombreProyecto AND Parcial = :parcial")
         with engine.connect() as conn:
-            conn.execute(query,{'Promedio':promedio,'Veracidad':veracidad,'Matricula':matricula})
-            conn.commit()
-            return True
+            ok= conn.execute(query,{'NombreProyecto':proyecto,'parcial':parcial})
+            if ok:
+                ruta = ok[0]
+            return ruta
     except Exception as e:
         return f'error---------------->{e}'
     
