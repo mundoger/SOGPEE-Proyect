@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,jsonify, url_for
+from flask import Flask,render_template,request,redirect,jsonify, url_for,send_file
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
@@ -7,47 +7,48 @@ from datetime import datetime
 import re,os
 
 app = Flask(__name__)
+#Pagina principal
 @app.route('/')
 def index():
     return render_template('index.html')
-
+#Formulario de login del estudiante
 @app.route('/loginEstudiante2')
 def loginEstudiante2():
     return render_template('/login/loginEstudiante2.html')
-
+#Formulario de login del asesor academico
 @app.route('/loginAsesorAcademico2')
 def loginAsesorAcademico2():
     return render_template('/login/loginAsesorAcademico2.html')
-
+#Formulario de login del coordinador
 @app.route('/loginCoordinacion2')
 def loginCoordinacion2():
     return render_template('login/loginCoordinacion2.html')
-
+#Formulario de login del coordinador alternativo para uso de otra pagina
 @app.route('/loginCoordinacionv2')
 def loginCoordinacionv2():
     return render_template('login/loginCoordinacionv2.html')
-
+#Validacion de login del estudiante
 @app.route('/iniciarSesionEstudiante',methods=['POST'])
 def loginEstudiante():
     matricula= request.form['matricula']
     correo= request.form['correo']
-    resultado = inicioSesionEstudiante(matricula,correo)
+    resultado = inicioSesionEstudiante(matricula,correo) #Llamada a la funcion de inicio de sesion que nos reedirige a la pagina de principal del estudiante
     return resultado
-
+#Validacion del login de coordinacion
 @app.route('/logincoordinacion',methods=['POST'])
 def logincoordinacion():
     correo = request.form['correo']
     password = request.form['password']
-    resultado = inicioSesionCoordinacion(correo,password)
+    resultado = inicioSesionCoordinacion(correo,password) #Llamada a la funcion de inicio de sesion que nos reedirige a la pagina de principal del coordinador
     return resultado
-
+#Validacion del login de coordinacion alternativo que usa otra pagina al login principal
 @app.route('/logincoordinacion2',methods=['POST'])
 def logincoordinacion2():
     correo = request.form['correo']
     password = request.form['password']
-    resultado = inicioSesionCoordinacion2(correo,password)
+    resultado = inicioSesionCoordinacion2(correo,password)#Llamada a la funcion de inicio de sesion que nos reedirige a la pagina de principal del coordinador
     return resultado
-
+#Funcion para guardar los datos del formulario de registro de proyecto, equipos etc
 @app.route('/guardartodo',methods=['POST'])
 def guardartodo():
     titulo = request.form['titulocuestionario']
@@ -55,17 +56,17 @@ def guardartodo():
     numero = request.form['numintegrantes']
     asesorA = request.form['AsesorAcademico']
     asesorE = request.form['AsesorEmpresarial']
-    if numero == '1':
+    if numero == '1': #Se ejecuta si el equipo tiene 1 integrante
         matricula = request.form['estudiante-0-campo1']
-        agregarproyectos(titulo,funcion)
-        ID = cargarIDProyecto(titulo)
-        equipo = cargarEquipoMaximo()
-        ok = guardarEquipo(matricula,equipo,ID)
-        guardarProyectoAsesores(ID,asesorE,asesorA)
-        if ok != True:
-            return render_template('Error/Error.html',ID=ok)
-        return render_template('Cargas/cargaEquipo.html')
-    if numero == '2':
+        agregarproyectos(titulo,funcion) #Se agrega el proyecto a la base de datos
+        ID = cargarIDProyecto(titulo) #Se obtiene el ID del proyecto que se acaba de agregar
+        equipo = cargarEquipoMaximo() #Se obtiene el numero del ultimo equipo agregado +1
+        ok = guardarEquipo(matricula,equipo,ID) #Se guarda el equipo en la base de datos si todo es correcto
+        guardarProyectoAsesores(ID,asesorE,asesorA) #Se asignan los asesores al proyecto
+        if ok != True: #Si hay un error se redirige a la pagina de error
+            return render_template('Error/Error.html',ID=ok) #Se redirige a la pagina de error con el ID del proyecto para identifcar el proyecto y se borre
+        return render_template('Cargas/cargaEquipo.html') #Pagina de carga de error
+    if numero == '2': #Se ejecuta si el equipo tiene 2 integrantes
             matricula = request.form['estudiante-0-campo1']
             matricula2 = request.form['estudiante-1-campo1']
             agregarproyectos(titulo,funcion)
@@ -76,7 +77,7 @@ def guardartodo():
             if ok != True:
                 return render_template('Error/Error.html',ID=ok)
             return render_template('Cargas/cargaEquipo.html')
-    elif numero == '3':
+    elif numero == '3': #Se ejecuta si el equipo tiene 3 integrantes
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
@@ -88,7 +89,7 @@ def guardartodo():
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
         return render_template('Cargas/cargaEquipo.html')
-    elif numero == '4':
+    elif numero == '4': #Se ejecuta si el equipo tiene 4 integrantes
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
@@ -102,7 +103,7 @@ def guardartodo():
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
         return render_template('Cargas/cargaEquipo.html')
-    elif numero == '5':
+    elif numero == '5': #Se ejecuta si el equipo tiene 5 integrantes
         matricula = request.form['estudiante-0-campo1']
         matricula2 = request.form['estudiante-1-campo1']
         matricula3 = request.form['estudiante-2-campo1']
@@ -116,71 +117,43 @@ def guardartodo():
         if ok != True:
             return render_template('Error/Error.html',ID=ok)
         return render_template('Cargas/cargaEquipo.html')
-
+#Funcion para subir los documentos del estudiante
 @app.route('/enviarDocumentos', methods=['POST'])
 def enviarDocumentos():
-    parcial = request.form['parcial']
+    parcial = request.form['parcialR']
     nombre = request.form['nombre']
+    proyectoN = request.form['proyectoR']
     cartas = request.files.get('cartas')
     proyecto = request.files.get('proyecto')
     evaluacion = request.files.get('evaluacion3')
     matricula = request.form['matricula']
     correo = request.form['correo']
-    ruta_carta = guardarCartas(cartas,parcial,nombre,matricula)
-    ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)
-    ruta_03 = guardar03(evaluacion,parcial,nombre,matricula)
-    guardarRutaDocumentos(matricula,ruta_carta,ruta_03,ruta_proyecto,parcial)
-    return render_template('carga.html', matricula=matricula,correo=correo)
+    if parcial != "":
+        if cartas is None and proyecto is None: #Se valida si la carta y el proyecto estan vacios
+            ruta_03 = guardar03(evaluacion,parcial,nombre,matricula) #Se obtiene la ruta del archivo 03
+            guardarRuta03(matricula,ruta_03,parcial) #Se guarda la ruta del archivo 03 en la base de datos
+        if proyecto is None and evaluacion is None: #Se valida si el proyecto y la evaluacion estan vacios
+            ruta_carta = guardarCartas(cartas,parcial,nombre,matricula) #Se obtiene la ruta de la carta
+            guardarCartass(matricula,ruta_carta,parcial)#Se guarda la ruta de la carta en la base de datos
+        if cartas is None and evaluacion is None:#Se valida si la carta y la evaluacion estan vacios
+            ruta_proyecto = guardarProyectos(proyecto,parcial,nombre,matricula)#Se obtiene la ruta del proyecto
+            guardarRutaDocumentos(matricula,ruta_proyecto,parcial,proyectoN)#Se guarda la ruta del proyecto en la base de datos
+    else:
+        return render_template('error/errorParcial.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
 
+    return render_template('cargas/carga.html', matricula=matricula,correo=correo) #Se redirige a la pagina de carga que luego nos redirige
+#Funcion para cargar los asesores
 @app.route('/agregar',methods=['POST'])
 def agregar():
     opcion = cargarAsesorEmp()
     asesorAcademico = cargarAsesorAcademico()
     return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico)
 
-
-def cargarAsesorEmp2():
-    query = text("SELECT EmpresaID,Nombre from Empresa")
-    with engine.connect() as conn:
-        try:
-            ok= conn.execute(query)
-            if ok:
-                opciones = ''.join([f'<option value="{row[0]}">{row[1]}</option>' for row in ok])
-            else:
-                opciones = ''.join([f'<option value="0">Nada por mostrar</option>' for row in ok])
-        except Exception as e:
-            return f"error {e}"
-        return opciones
-@app.route('/agregar2',methods=['POST'])
-def agregar2():
-    opcion = cargarAsesorEmp2()
-    return render_template('/registro_asesor.html',cargar2 = opcion)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/asignarEquipo',methods=['POST'])
 def asignarEquipo():
     opcion = cargarAsesorEmp()
     asesorAcademico = cargarAsesorAcademico()
     return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico)
-
-@app.route('/registro_asesor',methods=['POST'])
-def registroAsesor():
-    opcion = cargarAsesorEmp()
-    asesorAcademico = cargarAsesorAcademico()
-    return render_template('/registro_asesor.html',cargar = opcion, asesorAcademic = asesorAcademico)
 
 @app.route('/borrarID',methods=['POST'])
 def borrarID():
@@ -189,13 +162,13 @@ def borrarID():
     opcion = cargarAsesorEmp()
     asesorAcademico = cargarAsesorAcademico()
     return render_template('/Agregar.html',cargar = opcion, asesorAcademic = asesorAcademico) 
-
+#Funcion para cargar la pagina de cuestionario de satisfaccion
 @app.route('/encuestaSatisfaccion',methods=['POST'])
 def encuestaSatisfaccion():
     Matricula = request.form['Matricula']
     Correo = request.form['correo']
     return render_template('Cuestionarios/evaluacion_cuestionario.html',Matricula = Matricula,correo = Correo)
-
+#Funcion para obtener los datos del cuestionario de satisfaccion
 @app.route('/EvalulacionEstudiante',methods=['POST'])
 def enviarEvaluacionEstudiante():
     matricula = request.form['Matricula']
@@ -220,7 +193,7 @@ def loginAsesorAcademico():
     password = request.form['password']
     resultado = inicioSesionAsesorA(correo,password)
     return resultado
-
+#Funcion para cargar la pagina de revisar expediente
 @app.route('/AbrirExpediente',methods=['POST'])
 def AbrirExpediente():
     nombre_completo = request.form['nombre']
@@ -232,7 +205,25 @@ def AbrirExpediente():
     resultado = cargarProyectosAsesor(ID)
     return render_template('/perfiles/AsesorAcademico/revisar_expediente.html',Nombre1 = nombre1,Nombre2 = nombre2,ApellidoP = apellidop,ApellidoM = apellidom,Telefono = telefono,Correo = correo,resultado = resultado)
 
+@app.route('/verArchivo',methods=['POST'])
+def abrirExpediente():
+    parcial = request.form['parcialB']
+    proyecto = request.form['proyecto']
+    return render_template('perfiles/AsesorAcademico/abrirExpediente.html')
 
+@app.route('/calificarExpediente',methods=['POST'])
+def calificarExpediente():
+    nombre = request.form['nombre']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    return render_template('perfiles/AsesorAcademico/calificar_expediente.html',nombre = nombre,telefono = telefono,correo = correo)
+
+@app.route('/calificarSer',methods=['POST'])
+def calificarSer():
+    nombre = request.form['nombre']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+    return render_template('perfiles/AsesorAcademico/calificar_ser.html',nombre = nombre,telefono = telefono,correo = correo)
 
 
 
@@ -241,6 +232,7 @@ def AbrirExpediente():
 
 def inicioSesionEstudiante(matricula,correo):
     proyecto = cargarProyectoAlumno(matricula)
+    asesor = cargarAsesorEmpresarial(proyecto)
     try:
         query = text("SELECT Matricula,Nombre1,Nombre2,ApellidoP,ApellidoM,Telefono,Correo FROM estudiante WHERE matricula = :matricula AND correo =:correo")
         with engine.connect() as conn:
@@ -253,7 +245,7 @@ def inicioSesionEstudiante(matricula,correo):
                 ApellidoM = ok[4]
                 Telefono = ok[5]
                 Correo = ok[6]
-                return render_template('/perfiles/evaluacionEstudiante.html',Matricula=Matricula,Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo,proyecto = proyecto)
+                return render_template('/perfiles/evaluacionEstudiante.html',Matricula=Matricula,Nombre1=Nombre1,Nombre2=Nombre2,ApellidoM=ApellidoM,ApellidoP=ApellidoP,Telefono=Telefono,Correo=Correo,proyecto = proyecto,asesor=asesor)
             else:
                 return 'no encontado'
     except Exception as e:
@@ -318,10 +310,6 @@ def guardarProyectos(archivo,parcial,nombre,matricula):
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
     nuevo_nombre = f'proyeto{nombre}{parcial}.pdf'
-    if archivo.filename == '':
-        return 'No se selecciono ningun archivo'
-    if not archivo.filename.endswith('.pdf'):
-        return 'debe ser un archivo pdf'
     ruta_guardado = os.path.join(UPLOAD_FOLDER,secure_filename(nuevo_nombre))
     archivo.save(ruta_guardado)
     return ruta_guardado
@@ -470,75 +458,48 @@ def cargarProyectoAlumno(Matricula):
     with engine.connect() as conn:
         resultado = conn.execute(query,{'Matricula':Matricula}).fetchone()
         return resultado[0]
-        
-def cargarAsesorEmpresarial(Matricula):
-    query = text("""
-        SELECT a.Nombre1, a.Nombre2, a.ApellidoP, a.ApellidoM 
-        FROM estudiante est
-        JOIN equipos e ON est.Matricula = e.Matricula
-        JOIN proyectoasesores pa ON e.Id_proyecto = pa.Id_proyecto
-        JOIN asesor_empresarial a ON pa.Id_asesorE = a.AsesorID
-        WHERE est.Matricula = :Matricula
-    """)
 
-    with engine.connect() as conn:
-        resultado = conn.execute(query, {'Matricula': Matricula}).fetchone()
+def guardarRutaDocumentos(matricula,ruta_proyecto,parcial,NombreProyecto):
+    docExiste = documentoExiste(matricula,parcial)
+    if docExiste != True:
+        try:
+            query = text("INSERT INTO documentos (Matricula,Proyecto,Parcial,NombreProyecto) VALUES (:Matricula,:ruta_proyecto,:parcial,:NombreProyecto)")
+            with engine.connect() as conn:
+                conn.execute(query,{'Matricula':matricula,'ruta_proyecto':ruta_proyecto,'parcial':parcial,'NombreProyecto':NombreProyecto})
+                conn.commit()
+                return True
+        except Exception as e:
+            return f'-------------Error {e}'
+    else:
+        return False
 
-        if resultado:
-            return {
-                "Nombre1": resultado[0],
-                "Nombre2": resultado[1],
-                "ApellidoP": resultado[2],
-                "ApellidoM": resultado[3]
-            }
-        return None
-    
-@app.route('/obtener_asesor', methods=['GET'])
-def obtener_asesor():
-    id_proyecto = request.args.get('id_proyecto')
-    
-    if not id_proyecto:
-        return jsonify({"error": "ID de proyecto no proporcionado"}), 400
+def guardarRuta03(matricula,ruta_03,parcial):
+    formatoExiste = formato03Existe(matricula,parcial)
+    if formatoExiste != True:
+        try:
+            query = text("INSERT INTO Formato03 (Matricula,Formato03,Parcial) VALUES (:Matricula,:ruta_03,:parcial)")
+            with engine.connect() as conn:
+                conn.execute(query,{'Matricula':matricula,'ruta_03':ruta_03,'parcial':parcial})
+                conn.commit()
+                return True
+        except Exception as e:
+            return f'-------------Error {e}'
+    else:
+        return False
 
-    conexion = conexion()
-    cursor = conexion.cursor(dictionary=True)
-
-    try:
-        # Buscar el id_asesorA según el id_proyecto
-        cursor.execute("SELECT id_asesorA FROM proyectos WHERE id_proyecto = %s", (id_proyecto,))
-        proyecto = cursor.fetchone()
-
-        if not proyecto:
-            return jsonify({"error": "Proyecto no encontrado"}), 404
-
-        id_asesorA = proyecto["id_asesorA"]
-
-        # Buscar el nombre del asesor en la tabla de asesores
-        cursor.execute("SELECT Nombre1, Nombre2, ApellidoP, ApellidoM FROM asesores WHERE id_asesorA = %s", (id_asesorA,))
-        asesor = cursor.fetchone()
-
-        if not asesor:
-            return jsonify({"error": "Asesor no encontrado"}), 404
-
-        return jsonify(asesor)
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-    finally:
-        cursor.close()
-        conexion.close()
-
-
-
-def guardarRutaDocumentos(matricula,ruta_carta,ruta_03,ruta_proyecto,parcial):
-    try:
-        query = text("INSERT INTO documentos (Matricula, Carta, FO03,Proyecto,Parcial) VALUES (:Matricula,:ruta_carta,:ruta_03,:ruta_proyecto,:parcial)")
-        with engine.connect() as conn:
-            conn.execute(query,{'Matricula':matricula,'ruta_carta':ruta_carta,'ruta_03':ruta_03,'ruta_proyecto':ruta_proyecto,'parcial':parcial})
-            conn.commit()
-            return True
-    except Exception as e:
-        return f'-------------Error {e}'
+def guardarCartass(matricula,ruta_cartas,parcial):
+    cartaExiste = cartasExiste(matricula,parcial)
+    if cartaExiste != True:
+        try:
+            query = text("INSERT INTO Cartas (Matricula,Cartas,Parcial) VALUES (:Matricula,:ruta_cartas,:parcial)")
+            with engine.connect() as conn:
+                conn.execute(query,{'Matricula':matricula,'ruta_cartas':ruta_cartas,'parcial':parcial})
+                conn.commit()
+                return True
+        except Exception as e:
+            return f'-------------Error {e}'
+    else:
+        return False
 
 def promedio(question11,question12,question13,question14,question15,question16,question17,question18,question19):
     promedio = (question11+question12+question13+question14+question15+question16+question17+question18+question19)/9
@@ -608,132 +569,6 @@ def cargarProyectosAsesor(ID):
             return opciones_html
     except Exception as e:
         return None
-
-
-
-@app.route('/registro_asesor')
-def registro_asesor():
-    return render_template('registro_asesor.html')  # Asegúrate de que esta plantilla exista
-
-
-
-@app.route('/guardar_asesor', methods=['POST'])
-def guardar_asesor():
-    # Recibir los datos del formulario
-    nombre1 = request.form['nombre1']
-    nombre2 = request.form['nombre2']
-    apellidoP = request.form['apellidoP']
-    apellidoM = request.form['apellidoM']
-    telefono = request.form['telefono']
-    correo = request.form['correo']
-
-    # Crear la consulta SQL para insertar los datos en la tabla correcta
-    query = """
-    INSERT INTO asesoracademico (Nombre1, Nombre2, ApellidoP, ApellidoM, Telefono, Correo)
-    VALUES (:nombre1, :nombre2, :apellidoP, :apellidoM, :telefono, :correo)
-    """
-    
-    session = Session()
-    
-    try:
-        # Ejecutar la consulta con los parámetros
-        session.execute(text(query), {
-            'nombre1': nombre1,
-            'nombre2': nombre2,
-            'apellidoP': apellidoP,
-            'apellidoM': apellidoM,
-            'telefono': telefono,
-            'correo': correo,
-        })
-        
-        session.commit()
-        session.close()
-        
-        return render_template('Cargas/agregar_asesores.html')  # Redirigir correctamente a la ruta de la página
-    except Exception as e:
-        session.rollback()
-        session.close()
-
-from flask import render_template, request
-from sqlalchemy.sql import text
-from sqlalchemy.orm import Session
-
-@app.route('/registro_asesor_empresarial')
-def registro_asesor_empresarial():
-    # Suponiendo que tienes una base de datos con la tabla de empresas
-    session = Session()
-    empresas = session.execute("SELECT id, nombre FROM empresas").fetchall()
-    session.close()
-    return render_template('registro_asesor_empresarial.html', empresas=empresas)
-
-@app.route('/guardar_asesor_empresarial', methods=['POST'])
-def guardar_asesor_empresarial():
-    # Recibir los datos del formulario
-    nombre1 = request.form['nombre1']
-    nombre2 = request.form.get('nombre2', None)  # Campo opcional
-    apellidoP = request.form['apellidoP']
-    apellidoM = request.form.get('apellidoM', None)  # Campo opcional
-    telefono = request.form.get('telefono', None)
-    correo = request.form['correo']
-    empresa_id = request.form['Empresa']  # ID de la empresa seleccionada
-
-    # Crear la consulta SQL para insertar los datos en la tabla de asesores empresariales
-    query = """
-    INSERT INTO asesor_empresarial (Nombre1, Nombre2, ApellidoP, ApellidoM, Telefono, Correo, EmpresaID)
-    VALUES (:nombre1, :nombre2, :apellidoP, :apellidoM, :telefono, :correo, :empresa_id)
-    """
-
-    session = Session()
-
-    try:
-        # Ejecutar la consulta con los parámetros
-        session.execute(text(query), {
-            'nombre1': nombre1,
-            'nombre2': nombre2,
-            'apellidoP': apellidoP,
-            'apellidoM': apellidoM,
-            'telefono': telefono,
-            'correo': correo,
-            'empresa_id': empresa_id,
-        })
-        
-        session.commit()
-        session.close()
-        
-        return render_template('Cargas/agregar_asesores_empresariales.html')  # Página posterior al registro
-    except Exception as e:
-        session.rollback()
-        session.close()
-        return f"Error al guardar el asesor empresarial: {e}", 500
-
-
-
-
-
-
-
-
-
-
-def cargarAsesorAcademicoCoordinacion():
-    query = text("SELECT Empresa from Empresa ")
-    with engine.connect() as conn:
-        ok= conn.execute(query)
-        if ok:
-            opciones = ''.join([f'<option value="{row[0]}"> </option>' for row in ok])
-            return opciones
-        
-@app.route('/agregarEmpresa', methods=['POST'])
-def agregarC():
-    opcion = cargarEmpresa()
-    return render_template('registro_asesor.html', cargar2 = opcion)
-
-def cargarEmpresa():
-    query = text("SELECT EmpresaID, Nombre FROM Empresa")  # Consulta a la tabla Empresa
-    with engine.connect() as conn:
-        result = conn.execute(query).fetchall()  # Obtener todos los resultados de la consulta
-        return result  # Devuelve las filas obtenidas
-    
 
 
 

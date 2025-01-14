@@ -41,10 +41,7 @@
         <div class="divider"></div>
 
         <div>
-            <form action="/enviarDocumentos" method="post" enctype="multipart/form-data">
-                <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
-                <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
-                <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                
     
                 <!-- Columna derecha -->
                 <div class="right-column">
@@ -63,7 +60,9 @@
                     </div>
                     <div class="form-group">
                         <label for="asesor">Asesor empresarial</label>
-                        <input type="text" id="asesor" name="asesor" disabled placeholder="Sin asesor asignado">
+                        <select id="asesor" name="asesor">
+                            <option value="">...Seleccionar...</option>
+                        </select>
                     </div>
                     
                     <script>
@@ -87,25 +86,54 @@
                     
                     
     
-                    <h3 class="section-title">Adjuntar expediente</h3>
+                    <h3 class="section-title">Enviar expediente</h3>
                     <div class="buttons-container">
-                        <label for="file-cartas" class="btn btn-cartas">Cartas</label>
-                        <input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf" required>
-    
-                        <!-- Botón "Evaluación 03" -->
-                        <label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03</label>
-                        <input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf" required>
-    
-                        <!-- Botón "Proyecto" -->
-                        <label for="file-proyecto" class="btn btn-proyecto">Proyecto</label>
-                        <input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf" required>
-    
-                        <br>
-                        <button class="btn btn-documentos" name="accion" value="enviar">Subir documentos</button>
+                        <form id="form-cartas" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
+                            <label for="file-cartas" class="btn btn-cartas">Cartas
+                                <div class="loading-bar" id="loading-bar"></div>
+                            </label>
+                            <input type="file" name="cartas" id="file-cartas" class="file-input" accept=".pdf" onchange="submitForm('form-cartas')">
+                            <input type="hidden" name="parcialR" id="resultado" value="">
+                            <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
+                            <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
+                            <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
+                        </form>
+                        
+                        <form id="form-evaluacion" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
+                            <label for="file-evaluacion" class="btn btn-evaluacion">Evaluación 03
+                                <div class="loading-bar03" id="loading-bar03"></div>
+                            </label>
+                            <input type="file" name="evaluacion3" id="file-evaluacion" class="file-input" accept=".pdf" onchange="submitForm('form-evaluacion')">
+                            <input type="hidden" name="parcialR" id="resultado2" value="">
+                            <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
+                            <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
+                            <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
+                        </form>
+                        
+                        <form id="form-proyecto" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
+                            <label for="file-proyecto" class="btn btn-proyecto">Proyecto
+                                <div class="loading-barProyecto" id="loading-barProyecto"></div>
+                            </label>
+                            <input type="file" name="proyecto" id="file-proyecto" class="file-input" accept=".pdf" onchange="submitForm('form-proyecto')">
+                            <input type="hidden" name="parcialR" id="resultado3" value="">
+                            <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
+                            <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
+                            <input type="hidden" id="correo" name="correo" value="{{Correo}}">
+                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
+
+                        </form>
+                        
+                        
+                        
+                        
                     </div>
     
                 </div>
-            </form>
+            
             <div class="encuesta-container">
                 <form action="/encuestaSatisfaccion" method="post">
                     <h3 class="section-title">Encuesta de satisfacción</h3>
@@ -120,18 +148,93 @@
 </div>
 
 <script>
-    // Escuchar los cambios en cada input de archivo
-    document.getElementById('file-cartas').addEventListener('change', function(event) {
-        alert('Archivo "Cartas" seleccionado: ' + event.target.files[0].name);
+    const fileInput = document.getElementById("file-cartas");
+    const fileInput03 = document.getElementById("file-evaluacion");
+    const fileInputProyecto = document.getElementById("file-proyecto");
+    const loadingBar = document.getElementById("loading-bar");
+    const loadingBar03 = document.getElementById("loading-bar03");
+    const loadingBarProyecto = document.getElementById("loading-barProyecto");
+    const button = document.querySelector(".btn-cartas");
+    const button03 = document.querySelector(".btn-evaluacion");
+    const buttonProyecto = document.querySelector(".btn-proyecto");
+
+
+    fileInput.addEventListener("change", function () {
+        if (fileInput.files.length > 0) {
+            button.classList.add("loading");
+            loadingBar.style.animation = "load 6s linear infinite";
+                setTimeout(() => {
+                loadingBar.style.animation = "none";
+                loadingBar.style.left = "-100%"; 
+                button.classList.remove("loading");
+                alert("Archivo enviado: " + fileInput.files[0].name);
+            }, 3000);
+        }
     });
 
-    document.getElementById('file-evaluacion').addEventListener('change', function(event) {
-        alert('Archivo "Evaluación 03" seleccionado: ' + event.target.files[0].name);
+    fileInput03.addEventListener("change", function () {
+        if (fileInput03.files.length > 0) {
+            button03.classList.add("loading03");
+            loadingBar03.style.animation = "load 6s linear infinite";
+                setTimeout(() => {
+                loadingBar03.style.animation = "none";
+                loadingBar03.style.left = "-100%"; 
+                button03.classList.remove("loading03");
+                alert("Archivo enviado: " + fileInput.files[0].name);
+            }, 3000);
+        }
     });
 
-    document.getElementById('file-proyecto').addEventListener('change', function(event) {
-        alert('Archivo "Proyecto" seleccionado: ' + event.target.files[0].name);
+
+    fileInputProyecto.addEventListener("change", function () {
+        if (fileInputProyecto.files.length > 0) {
+            buttonProyecto.classList.add("loadingProyecto");
+            loadingBarProyecto.style.animation = "load 6s linear infinite";
+                setTimeout(() => {
+                loadingBarProyecto.style.animation = "none";
+                loadingBarProyecto.style.left = "-100%"; 
+                buttonProyecto.classList.remove("loadingProyecto");
+                alert("Archivo enviado: " + fileInput.files[0].name);
+            }, 3000);
+        }
     });
+
+
+
+            // Referenciar el select y el span
+    const selectElement = document.getElementById('parcial');
+    const selectElement2 = document.getElementById('parcial');
+    const selectElement3 = document.getElementById('parcial');
+    const resultadoSpan = document.getElementById('resultado');
+    const resultadoSpan2 = document.getElementById('resultado2');
+    const resultadoSpan3 = document.getElementById('resultado3');
+
+    selectElement.addEventListener('change', function() {
+    const textoSeleccionado = selectElement.options[selectElement.selectedIndex].value;
+    resultadoSpan.value = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
+        });
+
+    selectElement2.addEventListener('change', function() {
+    const textoSeleccionado2 = selectElement2.options[selectElement2.selectedIndex].value;
+    resultadoSpan2.value = textoSeleccionado2 !== "--Selecciona una opción--" ? textoSeleccionado2 : "Ninguno";
+        });
+
+
+    selectElement3.addEventListener('change', function() {
+    const textoSeleccionado3 = selectElement3.options[selectElement3.selectedIndex].value;
+    resultadoSpan3.value = textoSeleccionado3 !== "--Selecciona una opción--" ? textoSeleccionado3 : "Ninguno";
+        });
 </script>
+
+<script>
+    function submitForm(formId) {
+        // Evitar enviar varios formularios a la vez
+        const form = document.getElementById(formId);
+        if (form) {
+            form.submit();
+        }
+    }
+</script>
+
 </body>
 </html>
