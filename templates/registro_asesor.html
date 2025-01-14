@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Asesor</title>
+
+    <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: #ffffff;
+        max-width: 750px;
+        width: 100%;
+        padding: 35px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        text-align: center;
+    }
+
+    .header {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .header button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        background-color: #3498db;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+    .header button.active,
+    .header button:hover {
+        background-color: #217dbb;
+    }
+
+    .form-container {
+        display: none;
+    }
+
+    .form-container.active {
+        display: block;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        color: #34495e;
+        font-weight: 600;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: #f9f9f9;
+        transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus {
+        border-color: #2980b9;
+        outline: none;
+    }
+
+    button.submit {
+        background-color: #27ae60;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+    button.submit:hover {
+        background-color: #219150;
+    }
+
+    </style>
+    <script>
+        function showForm(formId, button) {
+            document.querySelectorAll('.form-container').forEach(form => form.classList.remove('active'));
+            document.getElementById(formId).classList.add('active');
+            document.querySelectorAll('.header button').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+        }
+        
+        function showError(message) {
+            alert(message);
+            window.location.href = "perfil_coordinacion.html";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button onclick="showForm('form-asesor-academico', this)" class="active">Asesor Académico</button>
+            <button onclick="showForm('form-asesor-empresarial', this)">Asesor Empresarial</button>
+        </div>
+        
+        <div id="form-asesor-academico" class="form-container active">
+            <h1>Registrar Asesor Académico</h1>
+            <form action="/guardar_asesor" method="POST">
+                <div class="form-group">
+                    <label for="nombre1">Primer Nombre:</label>
+                    <input type="text" id="nombre1" name="nombre1" required>
+                </div>
+                <div class="form-group">
+                    <label for="nombre2">Segundo Nombre:</label>
+                    <input type="text" id="nombre2" name="nombre2" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoP">Apellido Paterno:</label>
+                    <input type="text" id="apellidoP" name="apellidoP" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidoM">Apellido Materno:</label>
+                    <input type="text" id="apellidoM" name="apellidoM" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <button type="submit" class="submit">Guardar</button>
+            </form>
+        </div>
+        
+        <div id="form-asesor-empresarial" class="form-container">
+            <h1>Registrar Asesor Empresarial</h1>
+            <form action="/guardar_asesor_empresarial" method="POST">
+                <div>
+                    <label for="nombre1">Primer Nombre:</label>
+                    <input type="text" id="nombre1" name="nombre1" required>
+                </div>
+                <div>
+                    <label for="nombre2">Segundo Nombre:</label>
+                    <input type="text" id="nombre2" name="nombre2">
+                </div>
+                <div>
+                    <label for="apellidoP">Apellido Paterno:</label>
+                    <input type="text" id="apellidoP" name="apellidoP" required>
+                </div>
+                <div>
+                    <label for="apellidoM">Apellido Materno:</label>
+                    <input type="text" id="apellidoM" name="apellidoM">
+                </div>
+                <div>
+                    <label for="telefono">Teléfono:</label>
+                    <input type="text" id="telefono" name="telefono">
+                </div>
+                <div>
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" required>
+                </div>
+                <div id="asesor-empresarial" class="section">
+                    <label for="asesor-emp-campo1">Empresa y Asesor:*</label>
+                    <p id="txtmin">Seleccionar</p>
+
+                    <select name="AsesorEmpresarial" id="AsesorEpm">
+                        {{cargar | safe}}
+                        {{cargar | safe}}
+                    </select>
+                </div>
+                
+                
+                
+                <button type="submit">Registrar Asesor</button>
+            </form>
+        </div>
+        
+    </div>
+</body>
+</html>

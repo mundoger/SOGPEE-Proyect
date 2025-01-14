@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario UPT</title>
-    <link rel="stylesheet" href="{{
-        url_for('static',
-        filename='css/perfil_coordinacion.css')
-    }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil_coordinacion.css') }}">
 </head>
 <body>
     <div class="container">
@@ -30,11 +27,9 @@
             <!-- Columna derecha -->
             <div class="right-column">
                 <div class="form-group">
-                    <label for="parcial">Alta de academico:</label>
-                     <form action="" method="post">
-                         <button class="btn btn-registrar">Registrar</button>
-                    </form>
-
+                    <label for="parcial">Alta de académico:</label>
+                    <!-- Botón para redirigir -->
+                    <button class="btn btn-registrar" onclick="window.location.href='/registro_asesor'">Registrar</button>
                 </div>
                 <div class="form-group">
                     <label for="titulo">Modificar periodo</label>

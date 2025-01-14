@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario UPT</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/asesor.css') }}">
+    
+</head>
+<body>
+    <header>
+        <a href="/" class="logo-upt">
+            <img src="../static/img/logo_upt.png" alt="Logo UPT" height="80">
+        </a>
+    </header>
+    <div class="container">
+        <div class="form-container">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <div class="form-group">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" value="{{Nombre1}} {{Nombre2}} {{ApellidoP}} {{ApellidoM}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" id="telefono" name="telefono" value="{{Telefono}}" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="correo">Correo:</label>
+                    <input type="email" id="correo" name="correo" value="{{Correo}}" disabled>
+                </div>
+            </div>
+
+            <!-- Divisor vertical -->
+            <div class="divider"></div>
+
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <div class="form-group">
+                    <form action="/AbrirExpediente" method="post">
+                        <label for="parcial">Revisar expediente de los estudiantes:</label>
+                        <input type="hidden" name="nombre" value="{{Nombre1}} {{Nombre2}} {{ApellidoP}} {{ApellidoM}}">
+                        <input type="hidden" name="telefono" value="{{Telefono}}">
+                        <input type="hidden" name="correo" value="{{Correo}}">
+                        <input type="hidden" name="ID" value="{{ID}}">
+                        <button class="btn btn-revisar">Revisar</button>
+                    </form>
+
+                </div>
+                <div class="form-group">
+                    <form action="/subirActasCalificacion" method="post">
+                        <label for="asesor">Subir acta de calificaciones</label>
+                        <button class="btn btn-adjuntar">Adjuntar</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
