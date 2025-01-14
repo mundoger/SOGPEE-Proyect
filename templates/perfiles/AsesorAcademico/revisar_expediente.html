@@ -118,13 +118,6 @@
                         <option value="Seleccionar">..Seleccionar..</option>
                         {{resultado | safe}}
                     </select>
-                    <label for="parcial">Parcial (Solo para ver archivo)</label>
-                    <select name="parcial" id="parcial">
-                        <option value="">..Seleccionar..</option>
-                        <option value="Parcial1">Parcial 1</option>
-                        <option value="Parcial2">Parcial 2</option>
-                        <option value="Parcial3">Parcial 3</option>
-                    </select>
                     <div class="contenedorBotones">
                         <form action="/verArchivo" method="post">
                             <button class="btn btn-evaluar">Ver archivo</button>
@@ -134,6 +127,7 @@
                         <form action="/calificarExpediente" method="post">
                             <button class="btn btn-calificar">Calificar expediente</button>
                             <input type="hidden" name="proyecto" id="proyecto" value="">
+                            <input type="hidden" name="parcialB" id="parcialB" value="">
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}} {{Nombre2}} {{ApellidoP}} {{ApellidoM}}">
                             <input type="hidden" id="telefono" name="telefono" value="{{Telefono}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">

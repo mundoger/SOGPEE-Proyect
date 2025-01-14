@@ -68,7 +68,23 @@
                         </select>
                     </div>
                     
-                  
+                    <script>
+                        async function cargarAsesor(id_proyecto) {
+                            const response = await fetch(`/obtener_asesor?id_proyecto=${id_proyecto}`);
+                            const data = await response.json();
+                    
+                            const asesorInput = document.getElementById("asesor");
+                    
+                            if (data && !data.error) {
+                                asesorInput.value = `${data.Nombre1} ${data.Nombre2 || ''} ${data.ApellidoP} ${data.ApellidoM}`.trim();
+                            } else {
+                                asesorInput.value = "Sin asesor asignao";
+                            }
+                        }
+                    
+                        // Llamar a la función con el id del proyecto (reemplaza con el valor correcto)
+                        cargarAsesor("{{ id_proyecto }}"); 
+                    </script>
                     
                     
                     
@@ -84,8 +100,6 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
-                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
-
                         </form>
                         
                         <form id="form-evaluacion" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
@@ -97,8 +111,6 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
-                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
-
                         </form>
                         
                         <form id="form-proyecto" action="/enviarDocumentos" method="POST" enctype="multipart/form-data">
@@ -110,8 +122,6 @@
                             <input type="hidden" id="nombre" name="nombre" value="{{Nombre1}}{{Nombre2}}">
                             <input type="hidden" id="matricula" name="matricula" value="{{Matricula}}">
                             <input type="hidden" id="correo" name="correo" value="{{Correo}}">
-                            <input type="hidden" value="{{proyecto}}" name="proyectoR">
-
                         </form>
                         
                         
@@ -190,26 +200,17 @@
 
             // Referenciar el select y el span
     const selectElement = document.getElementById('parcial');
-    const selectElement2 = document.getElementById('parcial');
-    const selectElement3 = document.getElementById('parcial');
     const resultadoSpan = document.getElementById('resultado');
     const resultadoSpan2 = document.getElementById('resultado2');
     const resultadoSpan3 = document.getElementById('resultado3');
 
+        // Agregar un listener para el cambio en el select
     selectElement.addEventListener('change', function() {
     const textoSeleccionado = selectElement.options[selectElement.selectedIndex].value;
     resultadoSpan.value = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
-        });
+    resultadoSpan2.textContent = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
+    resultadoSpan3.textContent = textoSeleccionado !== "--Selecciona una opción--" ? textoSeleccionado : "Ninguno";
 
-    selectElement2.addEventListener('change', function() {
-    const textoSeleccionado2 = selectElement2.options[selectElement2.selectedIndex].value;
-    resultadoSpan2.value = textoSeleccionado2 !== "--Selecciona una opción--" ? textoSeleccionado2 : "Ninguno";
-        });
-
-
-    selectElement3.addEventListener('change', function() {
-    const textoSeleccionado3 = selectElement3.options[selectElement3.selectedIndex].value;
-    resultadoSpan3.value = textoSeleccionado3 !== "--Selecciona una opción--" ? textoSeleccionado3 : "Ninguno";
         });
 </script>
 

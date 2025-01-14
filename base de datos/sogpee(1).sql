@@ -1,5 +1,3 @@
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -8,15 +6,10 @@
 -- Tiempo de generación: 13-01-2025 a las 02:26:43
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-CREATE DATABASE IF NOT EXISTS `sogpee` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `sogpee`;
-=======
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -27,7 +20,12 @@ USE `sogpee`;
 --
 -- Base de datos: `sogpee`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `asesoracademico`
+--
 
 CREATE TABLE `asesoracademico` (
   `Id` int(11) NOT NULL,
@@ -51,8 +49,6 @@ CREATE TABLE `asesorempresarial` (
   `Empresa` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 --
 -- Volcado de datos para la tabla `asesorempresarial`
 --
@@ -157,8 +153,6 @@ CREATE TABLE `documentos` (
   `Parcial` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 --
 -- Volcado de datos para la tabla `documentos`
 --
@@ -195,6 +189,12 @@ CREATE TABLE `encuesta08` (
 INSERT INTO `encuesta08` (`Id`, `Promedio`, `Veracidad`, `Matricula`) VALUES
 (3, 10.00, 'si', 1322134083);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equipos`
+--
+
 CREATE TABLE `equipos` (
   `Id` int(11) NOT NULL,
   `Matricula` int(10) NOT NULL,
@@ -206,6 +206,12 @@ INSERT INTO `equipos` (`Id`, `Matricula`, `NoEquipo`, `Id_Proyecto`) VALUES
 (195, 1322134083, 1, 3),
 (196, 1322134084, 1, 3);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estudiante`
+--
+
 CREATE TABLE `estudiante` (
   `Matricula` int(10) NOT NULL,
   `Nombre1` varchar(20) NOT NULL,
@@ -216,8 +222,6 @@ CREATE TABLE `estudiante` (
   `Correo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 --
 -- Volcado de datos para la tabla `estudiante`
 --
@@ -305,6 +309,12 @@ CREATE TABLE `proyecto` (
 INSERT INTO `proyecto` (`ProyectoID`, `Nombre`, `Funcion`) VALUES
 (3, 'SOGPEE', 'Estancias y estadias');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `proyectoasesores`
+--
+
 CREATE TABLE `proyectoasesores` (
   `Id` int(11) NOT NULL,
   `Id_asesorE` int(11) NOT NULL,
@@ -312,15 +322,6 @@ CREATE TABLE `proyectoasesores` (
   `Id_proyecto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-CREATE TABLE `teacher` (
-  `TeacherID` int(11) NOT NULL,
-  `Nombre1` varchar(20) DEFAULT NULL,
-  `Nombre2` varchar(20) DEFAULT NULL,
-  `ApellidoP` varchar(20) DEFAULT NULL,
-  `ApellidoM` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-=======
 --
 -- Volcado de datos para la tabla `proyectoasesores`
 --
@@ -335,14 +336,11 @@ INSERT INTO `proyectoasesores` (`Id`, `Id_asesorE`, `Id_asesorA`, `Id_proyecto`)
 --
 -- Indices de la tabla `asesoracademico`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `asesoracademico`
   ADD PRIMARY KEY (`Id`);
 ALTER TABLE `asesorempresarial`
   ADD PRIMARY KEY (`AsesorID`),
   ADD KEY `EmpresaID` (`Empresa`);
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 
 --
 -- Indices de la tabla `cartas`
@@ -354,7 +352,6 @@ ALTER TABLE `cartas`
 --
 -- Indices de la tabla `coordinacion`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `coordinacion`
   ADD PRIMARY KEY (`Id`);
 ALTER TABLE `documentos`
@@ -372,8 +369,6 @@ ALTER TABLE `equipos`
   ADD KEY `Id_Proyecto` (`Id_Proyecto`);
 ALTER TABLE `estudiante`
   ADD PRIMARY KEY (`Matricula`);
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 
 --
 -- Indices de la tabla `formato03`
@@ -385,7 +380,6 @@ ALTER TABLE `formato03`
 --
 -- Indices de la tabla `proyecto`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `proyecto`
   ADD PRIMARY KEY (`ProyectoID`),
   ADD UNIQUE KEY `Nombre` (`Nombre`);
@@ -394,12 +388,6 @@ ALTER TABLE `proyectoasesores`
   ADD KEY `Id_asesorA` (`Id_asesorA`),
   ADD KEY `Id_asesorE` (`Id_asesorE`),
   ADD KEY `Id_proyecto` (`Id_proyecto`);
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-ALTER TABLE `teacher`
-  ADD PRIMARY KEY (`TeacherID`);
-ALTER TABLE `asesoracademico`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-=======
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -420,24 +408,15 @@ ALTER TABLE `cartas`
 --
 -- AUTO_INCREMENT de la tabla `coordinacion`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `coordinacion`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 ALTER TABLE `documentos`
+<<<<<<< HEAD
 <<<<<<< HEAD:base de datos/sogpee (5).sql
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-ALTER TABLE `encuesta08`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-ALTER TABLE `equipos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
-ALTER TABLE `proyecto`
-  MODIFY `ProyectoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-ALTER TABLE `proyectoasesores`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-ALTER TABLE `asesorempresarial`
-  ADD CONSTRAINT `asesorempresarial_ibfk_1` FOREIGN KEY (`Empresa`) REFERENCES `empresa` (`Nombre`) ON DELETE CASCADE ON UPDATE CASCADE;
 =======
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+>>>>>>> 75f3254 (Matenme)
 
 --
 -- AUTO_INCREMENT de la tabla `encuesta08`
@@ -488,7 +467,6 @@ ALTER TABLE `cartas`
 --
 -- Filtros para la tabla `documentos`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `documentos`
   ADD CONSTRAINT `documentos_ibfk_1` FOREIGN KEY (`Matricula`) REFERENCES `estudiante` (`Matricula`) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE `encuesta08`
@@ -496,8 +474,6 @@ ALTER TABLE `encuesta08`
 ALTER TABLE `equipos`
   ADD CONSTRAINT `equipos_ibfk_2` FOREIGN KEY (`Matricula`) REFERENCES `estudiante` (`Matricula`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `equipos_ibfk_3` FOREIGN KEY (`Id_Proyecto`) REFERENCES `proyecto` (`ProyectoID`) ON DELETE CASCADE ON UPDATE CASCADE;
-<<<<<<< HEAD:base de datos/sogpee (5).sql
-=======
 
 --
 -- Filtros para la tabla `formato03`
@@ -508,7 +484,6 @@ ALTER TABLE `formato03`
 --
 -- Filtros para la tabla `proyectoasesores`
 --
->>>>>>> 75f3254 (Matenme):base de datos/sogpee(1).sql
 ALTER TABLE `proyectoasesores`
   ADD CONSTRAINT `proyectoasesores_ibfk_1` FOREIGN KEY (`Id_asesorA`) REFERENCES `asesoracademico` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `proyectoasesores_ibfk_2` FOREIGN KEY (`Id_asesorE`) REFERENCES `asesorempresarial` (`AsesorID`) ON DELETE CASCADE ON UPDATE CASCADE,
