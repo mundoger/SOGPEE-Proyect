@@ -130,13 +130,16 @@
     <main class="container">
         <!-- Document Preview -->
         <div class="document-preview">
-            <h1 class="document-title"></h1>
+            <img src="{{imagen}}" alt="imagen del documento">
         </div>
 
         <!-- Action Buttons -->
         <div class="action-buttons">
             <form action="/descargarPdf" method="post">
+                <input type="hidden" name="proyecto" value="{{proyecto}}">
+                <input type="hidden" name="parcial" value="{{parcial}}">
                 <button class="button button-print">Descargar</button>
+
             </form>
             <form action="/calificarExpediente" method="post">
                 <button class="button button-grade">Calificar</button>

@@ -4,7 +4,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import text
 from conexion import engine,Session
 from datetime import datetime
-import re,os
+import re,os,fitz
+from io import BytesIO
+from PIL import Image
 
 app = Flask(__name__)
 #Pagina principal
@@ -209,7 +211,12 @@ def AbrirExpediente():
 def abrirExpediente():
     parcial = request.form['parcialB']
     proyecto = request.form['proyecto']
-    return render_template('perfiles/AsesorAcademico/abrirExpediente.html')
+    ruta = obtenerRutaPDF(proyecto,parcial)
+
+    imagen,error = visualizarPDF(ruta)
+    if error:
+        return f"error {error}",500
+    return render_template('perfiles/AsesorAcademico/abrirExpediente.html',parcial = parcial,proyecto = proyecto,imagen = imagen)
 
 @app.route('/calificarExpediente',methods=['POST'])
 def calificarExpediente():
@@ -225,7 +232,12 @@ def calificarSer():
     correo = request.form['correo']
     return render_template('perfiles/AsesorAcademico/calificar_ser.html',nombre = nombre,telefono = telefono,correo = correo)
 
-
+@app.route('/descargarPdf',methods=['POST'])
+def descargaPdf():
+    proyecto = request.form['proyecto']
+    parcial = request.form['parcial']
+    ruta = obtenerRutaPDF(proyecto,parcial)
+    return descargarPDF(ruta)
 
 
 
@@ -569,6 +581,74 @@ def cargarProyectosAsesor(ID):
             return opciones_html
     except Exception as e:
         return None
+
+def cargarAsesorEmpresarial(Proyecto):
+    query = text('''SELECT 
+    CONCAT(ae.Nombre1, ' ', ae.Nombre2, ' ', ae.ApellidoP, ' ', ae.ApellidoM) AS AsesorEmpresarial,
+    p.ProyectoID,
+    p.Nombre AS NombreProyecto
+FROM 
+    proyectoasesores pa
+JOIN 
+    asesorempresarial ae ON pa.Id_asesorE = ae.AsesorID
+JOIN 
+    proyecto p ON pa.Id_proyecto = p.ProyectoID
+    WHERE p.Nombre = :NombreProyecto''')
+    with engine.connect() as conn:
+        resultado = conn.execute(query,{'NombreProyecto':Proyecto}).fetchone()
+        if resultado:
+            return resultado[0]
+        else:
+            return 'No asignado'
+
+def documentoExiste(matricula,parcial):
+    query = text("SELECT Proyecto FROM documentos WHERE Matricula = :Matricula AND Parcial = :Parcial")
+    with engine.connect() as conn:
+        resultado = conn.execute(query,{'Matricula':matricula,'Parcial':parcial}).fetchone()
+        if resultado:
+            return True
+        else:
+            return False
+        
+
+def formato03Existe(matricula,parcial):
+    query = text("SELECT Formato03 FROM Formato03 WHERE Matricula = :Matricula AND Parcial = :Parcial")
+    with engine.connect() as conn:
+        resultado = conn.execute(query,{'Matricula':matricula,'Parcial':parcial}).fetchone()
+        if resultado:
+            return True
+        else:
+            return False
+
+def cartasExiste(matricula,parcial):
+    query = text("SELECT Cartas FROM Cartas WHERE Matricula = :Matricula AND Parcial = :Parcial")
+    with engine.connect() as conn:
+        resultado = conn.execute(query,{'Matricula':matricula,'Parcial':parcial}).fetchone()
+        if resultado:
+            return True
+        else:
+            return False
+        
+def descargarPDF(ruta):
+    pdf_ruta = ruta
+    try:
+        return send_file(pdf_ruta,as_attachment=True)
+    except Exception as e:
+        return f"Error {e}"
+    
+def obtenerRutaPDF(proyecto,parcial):
+    try:
+        query = text("SELECT Proyecto FROM documentos WHERE NombreProyecto = :NombreProyecto AND Parcial = :parcial")
+        with engine.connect() as conn:
+            ok= conn.execute(query,{'NombreProyecto':proyecto,'parcial':parcial})
+            if ok:
+                ruta = ok[0]
+            return ruta
+    except Exception as e:
+        return f'error---------------->{e}'
+    
+
+
 
 
 
