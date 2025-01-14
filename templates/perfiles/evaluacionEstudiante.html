@@ -63,10 +63,29 @@
                     </div>
                     <div class="form-group">
                         <label for="asesor">Asesor empresarial</label>
-                        <select id="asesor" name="asesor">
-                            <option value="">...Seleccionar...</option>
-                        </select>
+                        <input type="text" id="asesor" name="asesor" disabled placeholder="Sin asesor asignado">
                     </div>
+                    
+                    <script>
+                        async function cargarAsesor(id_proyecto) {
+                            const response = await fetch(`/obtener_asesor?id_proyecto=${id_proyecto}`);
+                            const data = await response.json();
+                    
+                            const asesorInput = document.getElementById("asesor");
+                    
+                            if (data && !data.error) {
+                                asesorInput.value = `${data.Nombre1} ${data.Nombre2 || ''} ${data.ApellidoP} ${data.ApellidoM}`.trim();
+                            } else {
+                                asesorInput.value = "Sin asesor asignao";
+                            }
+                        }
+                    
+                        // Llamar a la función con el id del proyecto (reemplaza con el valor correcto)
+                        cargarAsesor("{{ id_proyecto }}"); 
+                    </script>
+                    
+                    
+                    
     
                     <h3 class="section-title">Adjuntar expediente</h3>
                     <div class="buttons-container">
