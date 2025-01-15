@@ -211,11 +211,9 @@ def AbrirExpediente():
 def abrirExpediente():
     parcial = request.form['parcialB']
     proyecto = request.form['proyecto']
-    ruta = obtenerRutaPDF(proyecto,parcial)
-
-    imagen,error = visualizarPDF(ruta)
-    if error:
-        return f"error {error}",500
+    ruta = obtenerRutaPDF(proyecto,parcial)    
+    imagen = visualizarPDF(ruta)
+   
     return render_template('perfiles/AsesorAcademico/abrirExpediente.html',parcial = parcial,proyecto = proyecto,imagen = imagen)
 
 @app.route('/calificarExpediente',methods=['POST'])
@@ -466,11 +464,15 @@ def borrarIDproyecto(ID):
         return False
 
 def cargarProyectoAlumno(Matricula):
+    
     query = text("SELECT p.Nombre FROM estudiante est JOIN equipos e ON est.Matricula = e.Matricula JOIN proyecto p ON e.Id_Proyecto = p.ProyectoID WHERE est.Matricula = :Matricula")
     with engine.connect() as conn:
         resultado = conn.execute(query,{'Matricula':Matricula}).fetchone()
-        return resultado[0]
-
+        if resultado:
+            return resultado[0]
+        else:
+            return "No asignado"
+    
 def guardarRutaDocumentos(matricula,ruta_proyecto,parcial,NombreProyecto):
     docExiste = documentoExiste(matricula,parcial)
     if docExiste != True:
@@ -641,13 +643,42 @@ def obtenerRutaPDF(proyecto,parcial):
         query = text("SELECT Proyecto FROM documentos WHERE NombreProyecto = :NombreProyecto AND Parcial = :parcial")
         with engine.connect() as conn:
             ok= conn.execute(query,{'NombreProyecto':proyecto,'parcial':parcial})
-            if ok:
-                ruta = ok[0]
-            return ruta
-    except Exception as e:
-        return f'error---------------->{e}'
+            ruta = ok.fetchone()
+            if ruta:
+                rutaR = ruta[0]
+            return rutaR
+        
     
-
+    except Exception as e:
+        return f'error--------aqui-------->{e}'
+    
+def visualizarPDF(ruta):
+    pdf_path = ruta
+    try:
+        # Abrir el PDF y extraer la primera página
+        pdf_document = fitz.open(pdf_path)
+        page = pdf_document[0]
+        
+        # Renderizar la página como imagen
+        pix = page.get_pixmap()
+        img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+        
+        # Guardar la imagen en una carpeta temporal
+        temp_folder = os.path.join("static", "temp")
+        if not os.path.exists(temp_folder):
+            os.makedirs(temp_folder)
+        image_filename = f"preview_{os.path.basename(ruta).replace('.pdf', '.png')}"
+        image_path = os.path.join(temp_folder, image_filename)
+        img.save(image_path, format="PNG")
+        
+        # Cerrar el documento PDF
+        pdf_document.close()
+        
+        # Retornar la URL relativa de la imagen y ningún error
+        return url_for('static', filename=f"temp/{image_filename}")
+    except Exception as e:
+        # Retornar None como URL y el mensaje de error
+        return None, str(e)
 
 
 
