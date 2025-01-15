@@ -606,14 +606,132 @@ def documentoExiste(matricula,parcial):
             return False
         
 
-def formato03Existe(matricula,parcial):
-    query = text("SELECT Formato03 FROM Formato03 WHERE Matricula = :Matricula AND Parcial = :Parcial")
+@app.route('/registro_asesor')
+def registro_asesor():
+    return render_template('registro_asesor.html')  # Asegúrate de que esta plantilla exista
+
+
+
+@app.route('/guardar_asesor', methods=['POST'])
+def guardar_asesor():
+    # Recibir los datos del formulario
+    nombre1 = request.form['nombre1']
+    nombre2 = request.form['nombre2']
+    apellidoP = request.form['apellidoP']
+    apellidoM = request.form['apellidoM']
+    telefono = request.form['telefono']
+    correo = request.form['correo']
+
+    # Crear la consulta SQL para insertar los datos en la tabla correcta
+    query = """
+    INSERT INTO asesoracademico (Nombre1, Nombre2, ApellidoP, ApellidoM, Telefono, Correo)
+    VALUES (:nombre1, :nombre2, :apellidoP, :apellidoM, :telefono, :correo)
+    """
+    
+    session = Session()
+    
+    try:
+        # Ejecutar la consulta con los parámetros
+        session.execute(text(query), {
+            'nombre1': nombre1,
+            'nombre2': nombre2,
+            'apellidoP': apellidoP,
+            'apellidoM': apellidoM,
+            'telefono': telefono,
+            'correo': correo,
+        })
+        
+        session.commit()
+        session.close()
+        
+        return render_template('Cargas/agregar_asesores.html')  # Redirigir correctamente a la ruta de la página
+    except Exception as e:
+        session.rollback()
+        session.close()
+
+from flask import render_template, request
+from sqlalchemy.sql import text
+from sqlalchemy.orm import Session
+
+@app.route('/registro_asesor_empresarial')
+def registro_asesor_empresarial():
+    # Suponiendo que tienes una base de datos con la tabla de empresas
+    session = Session()
+    empresas = session.execute("SELECT id, nombre FROM empresas").fetchall()
+    session.close()
+    return render_template('registro_asesor_empresarial.html', empresas=empresas)
+
+@app.route('/guardar_asesor_empresarial', methods=['POST'])
+def guardar_asesor_empresarial():
+    # Recibir los datos del formulario
+    nombre1 = request.form['nombre1']
+    nombre2 = request.form.get('nombre2', None)  # Campo opcional
+    apellidoP = request.form['apellidoP']
+    apellidoM = request.form.get('apellidoM', None)  # Campo opcional
+    telefono = request.form.get('telefono', None)
+    correo = request.form['correo']
+    empresa_id = request.form['Empresa']  # ID de la empresa seleccionada
+
+    # Crear la consulta SQL para insertar los datos en la tabla de asesores empresariales
+    query = """
+    INSERT INTO asesor_empresarial (Nombre1, Nombre2, ApellidoP, ApellidoM, Telefono, Correo, EmpresaID)
+    VALUES (:nombre1, :nombre2, :apellidoP, :apellidoM, :telefono, :correo, :empresa_id)
+    """
+
+    session = Session()
+
+    try:
+        # Ejecutar la consulta con los parámetros
+        session.execute(text(query), {
+            'nombre1': nombre1,
+            'nombre2': nombre2,
+            'apellidoP': apellidoP,
+            'apellidoM': apellidoM,
+            'telefono': telefono,
+            'correo': correo,
+            'empresa_id': empresa_id,
+        })
+        
+        session.commit()
+        session.close()
+        
+        return render_template('Cargas/agregar_asesores_empresariales.html')  # Página posterior al registro
+    except Exception as e:
+        session.rollback()
+        session.close()
+        return f"Error al guardar el asesor empresarial: {e}", 500
+
+
+
+
+
+
+
+
+
+
+def cargarAsesorAcademicoCoordinacion():
+    query = text("SELECT Empresa from Empresa ")
     with engine.connect() as conn:
-        resultado = conn.execute(query,{'Matricula':matricula,'Parcial':parcial}).fetchone()
-        if resultado:
-            return True
-        else:
-            return False
+        ok= conn.execute(query)
+        if ok:
+            opciones = ''.join([f'<option value="{row[0]}"> </option>' for row in ok])
+            return opciones
+        
+@app.route('/agregarEmpresa', methods=['POST'])
+def agregarC():
+    opcion = cargarEmpresa()
+    return render_template('registro_asesor.html', cargar2 = opcion)
+
+def cargarEmpresa():
+    query = text("SELECT EmpresaID, Nombre FROM Empresa")  # Consulta a la tabla Empresa
+    with engine.connect() as conn:
+        result = conn.execute(query).fetchall()  # Obtener todos los resultados de la consulta
+        return result  # Devuelve las filas obtenidas
+    
+
+
+
 
 def cartasExiste(matricula,parcial):
     query = text("SELECT Cartas FROM Cartas WHERE Matricula = :Matricula AND Parcial = :Parcial")
